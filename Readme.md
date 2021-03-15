@@ -10,7 +10,7 @@ This set of examples illustrate different computer graphics concepts in 2D and 3
 Simulating an indirect color scheme with matplotlib
     
 <p align="center">
-    <a href="https://gitlab.com/dacalderon/grafica_dev/-/blob/dev/examples/ex_color_palette.py">
+    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_color_palette.py">
     <img src="screenshots/ex_color_palette.png" width="400">
     </a>
 </p>
@@ -19,7 +19,7 @@ Simulating an indirect color scheme with matplotlib
 Animation changing the color palette  while simulating an indirect color scheme with matplotlib
     
 <p align="center">
-    <a href="https://gitlab.com/dacalderon/grafica_dev/-/blob/dev/examples/ex_color_palette_anim.py">
+    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_color_palette_anim.py">
     <img src="screenshots/ex_color_palette_anim.gif" width="400">
     </a>
 </p>
@@ -28,7 +28,7 @@ Animation changing the color palette  while simulating an indirect color scheme 
 Using a direct color scheme with sira
     
 <p align="center">
-    <a href="https://gitlab.com/dacalderon/grafica_dev/-/blob/dev/examples/ex_sira_direct.py">
+    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_sira_direct.py">
     <img src="screenshots/ex_sira_direct.png" width="400">
     </a>
 </p>
@@ -37,7 +37,7 @@ Using a direct color scheme with sira
 Using an indirect color scheme with sira
     
 <p align="center">
-    <a href="https://gitlab.com/dacalderon/grafica_dev/-/blob/dev/examples/ex_sira_indirect.py">
+    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_sira_indirect.py">
     <img src="screenshots/ex_sira_indirect.png" width="400">
     </a>
 </p>
@@ -53,7 +53,7 @@ It attempts to set OpenGL core profile 3.3.
 Hello OpenGL!
     
 <p align="center">
-    <a href="https://gitlab.com/dacalderon/grafica_dev/-/blob/dev/examples/ex_triangle.py">
+    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_triangle.py">
     <img src="screenshots/ex_triangle.png" width="400">
     </a>
 </p>
@@ -62,7 +62,7 @@ Hello OpenGL!
 Drawing a Quad via a EBO
     
 <p align="center">
-    <a href="https://gitlab.com/dacalderon/grafica_dev/-/blob/dev/examples/ex_quad.py">
+    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_quad.py">
     <img src="screenshots/ex_quad.png" width="400">
     </a>
 </p>
@@ -71,7 +71,7 @@ Drawing a Quad via a EBO
 Drawing a simple cube with OpenGL
     
 <p align="center">
-    <a href="https://gitlab.com/dacalderon/grafica_dev/-/blob/dev/examples/ex_cube.py">
+    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_cube.py">
     <img src="screenshots/ex_cube.png" width="400">
     </a>
 </p>
@@ -83,7 +83,7 @@ Drawing a simple cube with OpenGL
 Drawing and transforming polygons with matplotlib
     
 <p align="center">
-    <a href="https://gitlab.com/dacalderon/grafica_dev/-/blob/dev/examples/ex_transform_polygon.py">
+    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_transform_polygon.py">
     <img src="screenshots/ex_transform_polygon.png" width="400">
     </a>
 </p>
@@ -92,7 +92,7 @@ Drawing and transforming polygons with matplotlib
 Transforming vertices in the CPU to create shapes.
     
 <p align="center">
-    <a href="https://gitlab.com/dacalderon/grafica_dev/-/blob/dev/examples/ex_cpu_transforms.py">
+    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_cpu_transforms.py">
     <img src="screenshots/ex_cpu_transforms.png" width="400">
     </a>
 </p>
@@ -101,7 +101,7 @@ Transforming vertices in the CPU to create shapes.
 Drawing 4 shapes with different transformations
     
 <p align="center">
-    <a href="https://gitlab.com/dacalderon/grafica_dev/-/blob/dev/examples/ex_4shapes.py">
+    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_4shapes.py">
     <img src="screenshots/ex_4shapes.png" width="400">
     </a>
 </p>
@@ -110,7 +110,7 @@ Drawing 4 shapes with different transformations
 Ilustrating different transformations
     
 <p align="center">
-    <a href="https://gitlab.com/dacalderon/grafica_dev/-/blob/dev/examples/ex_transformations_showcase.py">
+    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_transformations_showcase.py">
     <img src="screenshots/ex_transformations_showcase.gif" width="400">
     </a>
 </p>
@@ -119,7 +119,7 @@ Ilustrating different transformations
 Controlling the movement of a quad
     
 <p align="center">
-    <a href="https://gitlab.com/dacalderon/grafica_dev/-/blob/dev/examples/ex_quad_controlled.py">
+    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_quad_controlled.py">
     <img src="screenshots/ex_quad_controlled.gif" width="400">
     </a>
 </p>
@@ -137,7 +137,7 @@ Another example:
 https://github.com/swistakm/pyimgui/blob/master/doc/examples/integrations_glfw3.py#L2
     
 <p align="center">
-    <a href="https://gitlab.com/dacalderon/grafica_dev/-/blob/dev/examples/ex_transform_imgui.py">
+    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_transform_imgui.py">
     <img src="screenshots/ex_transform_imgui.png" width="400">
     </a>
 </p>
@@ -152,7 +152,7 @@ How to convert GLFW/C calls to GLFW/python
 https://pypi.org/project/glfw/
     
 <p align="center">
-    <a href="https://gitlab.com/dacalderon/grafica_dev/-/blob/dev/examples/ex_mouse.py">
+    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_mouse.py">
     <img src="screenshots/ex_mouse.gif" width="400">
     </a>
 </p>
@@ -164,7 +164,7 @@ https://pypi.org/project/glfw/
 Textures and transformations in 2D
     
 <p align="center">
-    <a href="https://gitlab.com/dacalderon/grafica_dev/-/blob/dev/examples/ex_texture_boo.py">
+    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_texture_boo.py">
     <img src="screenshots/ex_texture_boo.png" width="400">
     </a>
 </p>
@@ -173,7 +173,7 @@ Textures and transformations in 2D
 Texture Quad in 2D
     
 <p align="center">
-    <a href="https://gitlab.com/dacalderon/grafica_dev/-/blob/dev/examples/ex_texture_quad.py">
+    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_texture_quad.py">
     <img src="screenshots/ex_texture_quad.png" width="400">
     </a>
 </p>
@@ -182,7 +182,7 @@ Texture Quad in 2D
 Using mipmaps
     
 <p align="center">
-    <a href="https://gitlab.com/dacalderon/grafica_dev/-/blob/dev/examples/ex_mipmap.py">
+    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_mipmap.py">
     <img src="screenshots/ex_mipmap.png" width="400">
     </a>
 </p>
@@ -191,7 +191,7 @@ Using mipmaps
 Example drawing text with OpenGL textures
     
 <p align="center">
-    <a href="https://gitlab.com/dacalderon/grafica_dev/-/blob/dev/examples/ex_text_renderer.py">
+    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_text_renderer.py">
     <img src="screenshots/ex_text_renderer.gif" width="400">
     </a>
 </p>
@@ -203,7 +203,7 @@ Example drawing text with OpenGL textures
 Drawing many cars in 2D using scene_graph2
     
 <p align="center">
-    <a href="https://gitlab.com/dacalderon/grafica_dev/-/blob/dev/examples/ex_scene_graph_2dcars.py">
+    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_scene_graph_2dcars.py">
     <img src="screenshots/ex_scene_graph_2dcars.png" width="400">
     </a>
 </p>
@@ -212,7 +212,7 @@ Drawing many cars in 2D using scene_graph2
 Drawing a Snowman using scene_graph
     
 <p align="center">
-    <a href="https://gitlab.com/dacalderon/grafica_dev/-/blob/dev/examples/ex_scene_graph_snowman.py">
+    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_scene_graph_snowman.py">
     <img src="screenshots/ex_scene_graph_snowman.png" width="400">
     </a>
 </p>
@@ -224,7 +224,7 @@ Drawing a Snowman using scene_graph
 Hermite and Bezier curves using python, numpy and matplotlib
     
 <p align="center">
-    <a href="https://gitlab.com/dacalderon/grafica_dev/-/blob/dev/examples/ex_curves.py">
+    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_curves.py">
     <img src="screenshots/ex_curves.png" width="400">
     </a>
 </p>
@@ -236,7 +236,7 @@ Hermite and Bezier curves using python, numpy and matplotlib
 Projections example
     
 <p align="center">
-    <a href="https://gitlab.com/dacalderon/grafica_dev/-/blob/dev/examples/ex_projections.py">
+    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_projections.py">
     <img src="screenshots/ex_projections.gif" width="400">
     </a>
 </p>
@@ -245,7 +245,7 @@ Projections example
 Textures and transformations in 3D
     
 <p align="center">
-    <a href="https://gitlab.com/dacalderon/grafica_dev/-/blob/dev/examples/ex_texture_dice.py">
+    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_texture_dice.py">
     <img src="screenshots/ex_texture_dice.png" width="400">
     </a>
 </p>
@@ -254,7 +254,7 @@ Textures and transformations in 3D
 plotting a 2d function as a surface
     
 <p align="center">
-    <a href="https://gitlab.com/dacalderon/grafica_dev/-/blob/dev/examples/ex_height_plotter.py">
+    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_height_plotter.py">
     <img src="screenshots/ex_height_plotter.png" width="400">
     </a>
 </p>
@@ -263,7 +263,7 @@ plotting a 2d function as a surface
 Drawing 3D cars via scene graph
     
 <p align="center">
-    <a href="https://gitlab.com/dacalderon/grafica_dev/-/blob/dev/examples/ex_scene_graph_3dcars.py">
+    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_scene_graph_3dcars.py">
     <img src="screenshots/ex_scene_graph_3dcars.png" width="400">
     </a>
 </p>
@@ -276,7 +276,7 @@ If it is required to draw 3D over 2D, you may need to clear the depth buffer wit
 glClear(GL_DEPTH_BUFFER_BIT)
     
 <p align="center">
-    <a href="https://gitlab.com/dacalderon/grafica_dev/-/blob/dev/examples/ex_mix2d3d.py">
+    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_mix2d3d.py">
     <img src="screenshots/ex_mix2d3d.png" width="400">
     </a>
 </p>
@@ -285,7 +285,7 @@ glClear(GL_DEPTH_BUFFER_BIT)
 Bezier Surface using python, numpy and matplotlib
     
 <p align="center">
-    <a href="https://gitlab.com/dacalderon/grafica_dev/-/blob/dev/examples/ex_surface.py">
+    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_surface.py">
     <img src="screenshots/ex_surface.png" width="400">
     </a>
 </p>
@@ -297,7 +297,7 @@ Bezier Surface using python, numpy and matplotlib
 Showing lighting effects: Flat, Gauraud and Phong
     
 <p align="center">
-    <a href="https://gitlab.com/dacalderon/grafica_dev/-/blob/dev/examples/ex_lighting.py">
+    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_lighting.py">
     <img src="screenshots/ex_lighting.gif" width="400">
     </a>
 </p>
@@ -306,7 +306,7 @@ Showing lighting effects: Flat, Gauraud and Phong
 Showing lighting effects over two textured objects: Flat, Gauraud and Phong
     
 <p align="center">
-    <a href="https://gitlab.com/dacalderon/grafica_dev/-/blob/dev/examples/ex_lighting_texture2.py">
+    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_lighting_texture2.py">
     <img src="screenshots/ex_lighting_texture2.png" width="400">
     </a>
 </p>
@@ -315,7 +315,7 @@ Showing lighting effects over two textured objects: Flat, Gauraud and Phong
 Rendering a OBJ file simplified
     
 <p align="center">
-    <a href="https://gitlab.com/dacalderon/grafica_dev/-/blob/dev/examples/ex_obj_reader.py">
+    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_obj_reader.py">
     <img src="screenshots/ex_obj_reader.png" width="400">
     </a>
 </p>
@@ -330,7 +330,7 @@ documentation:
 https://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.spatial.Delaunay.html
     
 <p align="center">
-    <a href="https://gitlab.com/dacalderon/grafica_dev/-/blob/dev/examples/ex_delaunay.py">
+    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_delaunay.py">
     <img src="screenshots/ex_delaunay.png" width="400">
     </a>
 </p>

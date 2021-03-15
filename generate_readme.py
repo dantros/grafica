@@ -37,7 +37,7 @@ $DESCRIPTION$
 
     ExampleImageTemplateText = """
 <p align="center">
-    <a href="https://gitlab.com/dacalderon/grafica_dev/-/blob/dev/examples/$EXAMPLE_FILENAME$">
+    <a href="https://github.com/dantros/grafica/blob/main/examples/$EXAMPLE_FILENAME$">
     <img src="screenshots/$SCREENSHOT_FILENAME$" width="400">
     </a>
 </p>
