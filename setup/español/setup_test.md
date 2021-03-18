@@ -4,7 +4,7 @@ Descargando los archivos
 
 Primero debe descargar los archivos y códigos que se usarán en el curso, para esto, debe dirigirse al repositorio https://github.com/dantros/grafica, descargar el .zip y descomprimirlo
 
-![Descarga](/captures/git_files.jpg)
+![Descarga](./captures/git_files.jpg)
 
 Pero si cuenta con el sistema de control de versiones Git instalado, es preferible que haga ``git clone`` del repositorio
 

@@ -28,23 +28,23 @@ Anaconda Distribution, permite administrar paquetes de python de manera similar 
 
 Primero descargue e instale anaconda python versión 3.8 en https://www.anaconda.com/products/individual#Downloads
 
-![Descarga](/captures/captura3.jpg)
+![Descarga](./captures/captura3.jpg)
 
  Marque la segunda opción y termine la instalación
 
 
-![instalacion](/captures/captura4.jpg)
+![instalacion](./captures/captura4.jpg)
 
 Creando un environment
 ----------------------
 
 Ahora necesita trabajar con la terminal de Anaconda "Anaconda Prompt" escribiendo en el buscador.
 
-![buscador](/captures/captura5.jpg)
+![buscador](./captures/captura5.jpg)
 
 Donde se abrirá una terminal como la que se muestra
 
-![terminal](/captures/captura6.jpg)
+![terminal](./captures/captura6.jpg)
 
 
 En dicha terminal creamos un environment ejecutando:
@@ -108,15 +108,15 @@ Ahora, deberá instalar Python para que se agregue a sus variables de entorno:
  
 Descargar e instalar la última versión estable de Python para Windows desde https://www.python.org/downloads/windows/ segun el procesador de su computador (32 o 64 bits).
 
-![Descarga](/captures/captura0.jpg)
+![Descarga](./captures/captura0.jpg)
 
 Luego abra el ejecutable y realice la instalación, donde es importante que añada python al path, marcando la opción.  POR FAVOR NO OLVIDE ESTO. SI LO HACE ¡REINSTALE!
 
-![path](/captures/captura1.jpg)
+![path](./captures/captura1.jpg)
 
 Una vez instalado, asegúrese de que python funciona. Abra alguna terminal de windows (windows-> buscar o ejecutar -> cmd). 
 
-![cmd](/captures/captura8.jpg)
+![cmd](./captures/captura8.jpg)
 
 
 Luego escriba en la terminal

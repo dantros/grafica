@@ -4,7 +4,7 @@ Instalación de python y librerias en Linux (Debian / Ubuntu)
 
 Primero hay que revisar si su sistema tiene python3 instalado, para esto abra su terminal
 
-![Descarga](/captures/captura001.jpg)
+![Descarga](./captures/captura001.jpg)
 
 Ejecute ``python`` o ``python3``. Si la respuesta es algo del tipo:
 
