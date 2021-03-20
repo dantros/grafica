@@ -7,6 +7,10 @@ from OpenGL.GL import *
 __author__ = "Daniel Calderon"
 __license__ = "MIT"
 
+# We will use 32 bits data, so an integer has 4 bytes
+# 1 byte = 8 bits
+SIZE_IN_BYTES = 4
+
 class GPUShape:
     def __init__(self):
         """VAO, VBO, EBO and texture handlers to GPU memory"""
