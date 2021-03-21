@@ -341,3 +341,20 @@ Face based data structure for a triangle mesh
 ### ex_triangle_mesh_builder.py
 Using the dedicated face based triangle mesh builder
     
+## Advanced OpenGL
+
+    
+### ex_geometry_shader.py
+Geometry Shader Basic Example
+
+Adapted from: https://learnopengl.com/code_viewer_gh.php?code=src/4.advanced_opengl/9.1.geometry_shader_houses/geometry_shader_houses.cpp
+    
+<p align="center">
+    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_geometry_shader.py">
+    <img src="screenshots/ex_geometry_shader.png" width="400">
+    </a>
+</p>
+    
+### ex_render_to_texture.py
+Render to Texture Example
+    
