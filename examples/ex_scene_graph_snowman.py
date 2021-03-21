@@ -82,13 +82,20 @@ def createColorCircle(N, R, r, g, b):
     return bs.Shape(vertices, indices)
 
 
-def createSnowman():
+def createSnowman(pipeline):
+
+    # Convenience function to ease initialization
+    def createGPUShape(shape):
+        gpuShape = es.GPUShape().initBuffers()
+        pipeline.setupVAO(gpuShape)
+        gpuShape.fillBuffers(shape.vertices, shape.indices, GL_STATIC_DRAW)
+        return gpuShape
 
     # basic GPUShapes
-    gpuWhiteCircle = es.toGPUShape(createColorCircle(30, 1, 1, 1, 1), GL_STATIC_DRAW)
-    gpuBlackCircle = es.toGPUShape(createColorCircle(10, 1, 0, 0, 0), GL_STATIC_DRAW)
-    gpuBrownQuad = es.toGPUShape(bs.createColorQuad(0.6, 0.3, 0), GL_STATIC_DRAW)
-    gpuOrangeTriangle = es.toGPUShape(createColorTriangle(1, 0.6, 0), GL_STATIC_DRAW)
+    gpuWhiteCircle = createGPUShape(createColorCircle(30, 1, 1, 1, 1))
+    gpuBlackCircle = createGPUShape(createColorCircle(10, 1, 0, 0, 0))
+    gpuBrownQuad = createGPUShape(bs.createColorQuad(0.6, 0.3, 0))
+    gpuOrangeTriangle = createGPUShape(createColorTriangle(1, 0.6, 0))
     
     # Leaf nodes
     whiteCircleNode = sg.SceneGraphNode("whiteCircleNode")
@@ -214,7 +221,7 @@ if __name__ == "__main__":
     glClearColor(0.55, 0.55, 0.85, 1.0)
 
     # Creating shapes on GPU memory
-    snowman = createSnowman()
+    snowman = createSnowman(pipeline)
 
     # Our shapes here are always fully painted
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)

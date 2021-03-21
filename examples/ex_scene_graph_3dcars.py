@@ -48,10 +48,18 @@ def on_key(window, key, scancode, action, mods):
         print('Unknown key')
 
 
-def createCar(r,g,b):
+def createCar(pipeline, r, g, b):
 
-    gpuBlackCube = es.toGPUShape(bs.createColorCube(0,0,0), GL_STATIC_DRAW)
-    gpuChasisCube = es.toGPUShape(bs.createColorCube(r,g,b), GL_STATIC_DRAW)
+    # Creating shapes on GPU memory
+    blackCube = bs.createColorCube(0,0,0)
+    gpuBlackCube = es.GPUShape().initBuffers()
+    pipeline.setupVAO(gpuBlackCube)
+    gpuBlackCube.fillBuffers(blackCube.vertices, blackCube.indices, GL_STATIC_DRAW)
+
+    chasisCube = bs.createColorCube(r,g,b)
+    gpuChasisCube = es.GPUShape().initBuffers()
+    pipeline.setupVAO(gpuChasisCube)
+    gpuChasisCube.fillBuffers(chasisCube.vertices, chasisCube.indices, GL_STATIC_DRAW)
     
     # Cheating a single wheel
     wheel = sg.SceneGraphNode("wheel")
@@ -118,9 +126,13 @@ if __name__ == "__main__":
     glEnable(GL_DEPTH_TEST)
 
     # Creating shapes on GPU memory
-    gpuAxis = es.toGPUShape(bs.createAxis(7), GL_STATIC_DRAW)
-    redCarNode = createCar(1,0,0)
-    blueCarNode = createCar(0,0,1)
+    cpuAxis = bs.createAxis(7)
+    gpuAxis = es.GPUShape().initBuffers()
+    mvpPipeline.setupVAO(gpuAxis)
+    gpuAxis.fillBuffers(cpuAxis.vertices, cpuAxis.indices, GL_STATIC_DRAW)
+
+    redCarNode = createCar(mvpPipeline, 1, 0, 0)
+    blueCarNode = createCar(mvpPipeline, 0, 0, 1)
 
     blueCarNode.transform = np.matmul(tr.rotationZ(-np.pi/4), tr.translate(3.0,0,0.5))
 

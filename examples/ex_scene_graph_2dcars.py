@@ -29,10 +29,18 @@ def on_key(window, key, scancode, action, mods):
         print('Unknown key')
 
 
-def createCar():
+def createCar(pipeline):
 
-    gpuBlackQuad = es.toGPUShape(bs.createColorQuad(0,0,0), GL_STATIC_DRAW)
-    gpuRedQuad = es.toGPUShape(bs.createColorQuad(1,0,0), GL_STATIC_DRAW)
+    # Creating shapes on GPU memory
+    blackQuad = bs.createColorQuad(0,0,0)
+    gpuBlackQuad = es.GPUShape().initBuffers()
+    pipeline.setupVAO(gpuBlackQuad)
+    gpuBlackQuad.fillBuffers(blackQuad.vertices, blackQuad.indices, GL_STATIC_DRAW)
+
+    redQuad = bs.createColorQuad(1,0,0)
+    gpuRedQuad = es.GPUShape().initBuffers()
+    pipeline.setupVAO(gpuRedQuad)
+    gpuRedQuad.fillBuffers(redQuad.vertices, redQuad.indices, GL_STATIC_DRAW)
     
     # Cheating a single wheel
     wheel = sg.SceneGraphNode("wheel")
@@ -67,12 +75,12 @@ def createCar():
 
     return traslatedCar
 
-def createCars(N):
+def createCars(pipeline, N):
 
     # First we scale a car
     scaledCar = sg.SceneGraphNode("traslatedCar")
     scaledCar.transform = tr.uniformScale(0.15)
-    scaledCar.childs += [createCar()] # Re-using the previous function
+    scaledCar.childs += [createCar(pipeline)] # Re-using the previous function
 
     cars = sg.SceneGraphNode("cars")
 
@@ -119,7 +127,7 @@ if __name__ == "__main__":
     glClearColor(0.85, 0.85, 0.85, 1.0)
 
     # Creating shapes on GPU memory
-    cars = createCars(5)
+    cars = createCars(pipeline, 5)
 
     # Our shapes here are always fully painted
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)

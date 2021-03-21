@@ -81,21 +81,26 @@ if __name__ == "__main__":
 
     # Testing text 3D texture. Check the terminal!
     for char in "hi!":
-        print(textBitsTexture[:, :, ord(char)] * 255)
+        print(textBitsTexture[:, :, ord(char)].transpose() * 255)
         print()
 
     # Creating shapes on GPU memory
-
     backgroundShape = bs.createTextureQuad(1,1)
     bs.scaleVertices(backgroundShape, 5, [2,2,1])
-    backgroundTexture = es.textureSimpleSetup(getAssetPath("torres-del-paine-sq.jpg"), GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, GL_LINEAR, GL_LINEAR)
-    gpuBackground = es.toGPUShape(backgroundShape, GL_STATIC_DRAW, backgroundTexture)
+    gpuBackground = es.GPUShape().initBuffers()
+    texturePipeline.setupVAO(gpuBackground)
+    gpuBackground.fillBuffers(backgroundShape.vertices, backgroundShape.indices, GL_STATIC_DRAW)
+    gpuBackground.texture = es.textureSimpleSetup(
+        getAssetPath("torres-del-paine-sq.jpg"), GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, GL_LINEAR, GL_LINEAR)
 
     headerText = "Torres del Paine"
     headerCharSize = 0.1
     headerCenterX = headerCharSize * len(headerText) / 2
     headerShape = tx.textToShape(headerText, headerCharSize, headerCharSize)
-    gpuHeader = es.toGPUShape(headerShape, GL_STATIC_DRAW, gpuText3DTexture)
+    gpuHeader = es.GPUShape().initBuffers()
+    textPipeline.setupVAO(gpuHeader)
+    gpuHeader.fillBuffers(headerShape.vertices, headerShape.indices, GL_STATIC_DRAW)
+    gpuHeader.texture = gpuText3DTexture
     headerTransform = tr.matmul([
         tr.translate(0.9, -headerCenterX, 0),
         tr.rotationZ(np.pi/2),
@@ -109,8 +114,14 @@ if __name__ == "__main__":
     timeStr = now.strftime("%H:%M:%S.%f")[:-3]
     dateShape = tx.textToShape(dateStr, dateCharSize, dateCharSize)
     timeShape = tx.textToShape(timeStr, timeCharSize, timeCharSize)
-    gpuDate = es.toGPUShape(dateShape, GL_DYNAMIC_DRAW, gpuText3DTexture)
-    gpuTime = es.toGPUShape(timeShape, GL_DYNAMIC_DRAW, gpuText3DTexture)
+    gpuDate = es.GPUShape().initBuffers()
+    gpuTime = es.GPUShape().initBuffers()
+    textPipeline.setupVAO(gpuDate)
+    textPipeline.setupVAO(gpuTime)
+    gpuDate.fillBuffers(dateShape.vertices, dateShape.indices, GL_STATIC_DRAW)
+    gpuTime.fillBuffers(timeShape.vertices, timeShape.indices, GL_STATIC_DRAW)
+    gpuDate.texture = gpuText3DTexture
+    gpuTime.texture = gpuText3DTexture
 
     second = now.second
     color = [1.0,1.0,1.0]
@@ -143,8 +154,9 @@ if __name__ == "__main__":
         dateShape = tx.textToShape(dateStr, dateCharSize, dateCharSize)
         timeShape = tx.textToShape(timeStr, timeCharSize, timeCharSize)
 
-        es.updateGPUShape(gpuDate, dateShape, GL_DYNAMIC_DRAW)
-        es.updateGPUShape(gpuTime, timeShape, GL_DYNAMIC_DRAW)
+        # Updating GPU memory...
+        gpuDate.fillBuffers(dateShape.vertices, dateShape.indices, GL_DYNAMIC_DRAW)
+        gpuTime.fillBuffers(timeShape.vertices, timeShape.indices, GL_DYNAMIC_DRAW)
 
         if now.second != second:
             second = now.second

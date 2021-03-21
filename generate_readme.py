@@ -100,6 +100,10 @@ $DESCRIPTION$
             "ex_triangle_mesh.py",
             "ex_triangle_mesh_builder.py"
         ]),
+        ExampleFamily("Advanced OpenGL",[
+            "ex_geometry_shader.py",
+            "ex_render_to_texture.py"
+        ])
         #ExampleFamily("Volumetric Rendering",[
         #    "ex4_mayavi.py"
         #])

@@ -91,15 +91,22 @@ if __name__ == "__main__":
     # and which one is at the back
     glEnable(GL_DEPTH_TEST)
 
+    # Convenience function to ease initialization
+    def createGPUShape(shape):
+        gpuShape = es.GPUShape().initBuffers()
+        pipeline.setupVAO(gpuShape)
+        gpuShape.fillBuffers(shape.vertices, shape.indices, GL_STATIC_DRAW)
+        return gpuShape
+
     # Creating shapes on GPU memory
-    gpuAxis = es.toGPUShape(bs.createAxis(7), GL_STATIC_DRAW)
-    gpuRedCube = es.toGPUShape(bs.createColorCube(1,0,0), GL_STATIC_DRAW)
-    gpuGreenCube = es.toGPUShape(bs.createColorCube(0,1,0), GL_STATIC_DRAW)
-    gpuBlueCube = es.toGPUShape(bs.createColorCube(0,0,1), GL_STATIC_DRAW)
-    gpuYellowCube = es.toGPUShape(bs.createColorCube(1,1,0), GL_STATIC_DRAW)
-    gpuCyanCube = es.toGPUShape(bs.createColorCube(0,1,1), GL_STATIC_DRAW)
-    gpuPurpleCube = es.toGPUShape(bs.createColorCube(1,0,1), GL_STATIC_DRAW)
-    gpuRainbowCube = es.toGPUShape(bs.createRainbowCube(), GL_STATIC_DRAW)
+    gpuAxis = createGPUShape(bs.createAxis(7))
+    gpuRedCube = createGPUShape(bs.createColorCube(1,0,0))
+    gpuGreenCube = createGPUShape(bs.createColorCube(0,1,0))
+    gpuBlueCube = createGPUShape(bs.createColorCube(0,0,1))
+    gpuYellowCube = createGPUShape(bs.createColorCube(1,1,0))
+    gpuCyanCube = createGPUShape(bs.createColorCube(0,1,1))
+    gpuPurpleCube = createGPUShape(bs.createColorCube(1,0,1))
+    gpuRainbowCube = createGPUShape(bs.createRainbowCube())
 
     t0 = glfw.get_time()
     camera_theta = np.pi/4
