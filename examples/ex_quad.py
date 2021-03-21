@@ -105,13 +105,37 @@ def createQuad(shaderProgram):
     gpuShape.vbo = glGenBuffers(1)
     gpuShape.ebo = glGenBuffers(1)
 
-    # binding the generated vao
+
+    glBindBuffer(GL_ARRAY_BUFFER, gpuShape.vbo)
+    glBufferData(GL_ARRAY_BUFFER, len(vertexData) * SIZE_IN_BYTES, vertexData, GL_STATIC_DRAW)
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gpuShape.ebo)
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, len(indices) * SIZE_IN_BYTES, indices, GL_STATIC_DRAW)
+
+
+
+    # Sending data to the GPU ...
+
+    # binding the generated vao and associating the VBO and EBO to it
     glBindVertexArray(gpuShape.vao)
+    glBindBuffer(GL_ARRAY_BUFFER, gpuShape.vbo)
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gpuShape.ebo)
+    glBindVertexArray(0)
 
     # VBO
     # Vertex data must be attached to a Vertex Buffer Object
-    glBindBuffer(GL_ARRAY_BUFFER, gpuShape.vbo)
-    glBufferData(GL_ARRAY_BUFFER, len(vertexData) * SIZE_IN_BYTES, vertexData, GL_STATIC_DRAW)
+    
+    #glBufferData(GL_ARRAY_BUFFER, len(vertexData) * SIZE_IN_BYTES, vertexData, GL_STATIC_DRAW)
+
+    # EBO
+    # Connections among vertices are stored in the Elements Buffer Object
+    
+    #glBufferData(GL_ELEMENT_ARRAY_BUFFER, len(indices) * SIZE_IN_BYTES, indices, GL_STATIC_DRAW)
+
+    # unbinding current vao
+
+
+    # binding the generated vao
+    glBindVertexArray(gpuShape.vao)
 
     # Setting up the location of the attributes position and color from the VBO
     # A vertex attribute has 3 integers for the position (each is 4 bytes),
@@ -125,27 +149,17 @@ def createQuad(shaderProgram):
     glVertexAttribPointer(color, 3, GL_FLOAT, GL_FALSE, 6 * SIZE_IN_BYTES, ctypes.c_void_p(3 * SIZE_IN_BYTES))
     glEnableVertexAttribArray(color)
 
-    # EBO
-    # Connections among vertices are stored in the Elements Buffer Object
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gpuShape.ebo)
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, len(indices) * SIZE_IN_BYTES, indices, GL_STATIC_DRAW)
-
     # unbinding current vao
     glBindVertexArray(0)
 
+
+    # Attempt to execute this without a vao binded
+
+
+    
+
     return gpuShape
-
-
-def drawCall(gpuShape):
-
-    # Binding proper buffers
-    glBindVertexArray(gpuShape.vao)
-    glBindBuffer(GL_ARRAY_BUFFER, gpuShape.vbo)
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gpuShape.ebo)
-
-    # Render the active element buffer with the active shader program
-    glDrawElements(GL_TRIANGLES, gpuShape.size, GL_UNSIGNED_INT, None)
-
+    
 
 if __name__ == "__main__":
 
@@ -190,8 +204,9 @@ if __name__ == "__main__":
         # Clearing the screen in both, color and depth
         glClear(GL_COLOR_BUFFER_BIT)
 
-        # Drawing the Quad
-        drawCall(gpuQuad)
+        # Drawing the Quad as specified in the VAO with the active shader program
+        glBindVertexArray(gpuQuad.vao)
+        glDrawElements(GL_TRIANGLES, gpuQuad.size, GL_UNSIGNED_INT, None)
 
         # Once the render is done, buffers are swapped, showing only the complete scene.
         glfw.swap_buffers(window)
