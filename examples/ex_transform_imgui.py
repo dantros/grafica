@@ -23,14 +23,12 @@ from imgui.integrations.glfw import GlfwRenderer
 import os.path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from grafica.gpu_shape import GPUShape
+import grafica.basic_shapes as bs
+import grafica.easy_shaders as es
 import grafica.transformations as tr
 
 __author__ = "Daniel Calderon"
 __license__ = "MIT"
-
-# We will use 32 bits data, so an integer has 4 bytes
-# 1 byte = 8 bits
-SIZE_IN_BYTES = 4
 
 
 # A class to store the application control
@@ -58,70 +56,6 @@ def on_key(window, key, scancode, action, mods):
     else:
         print('Unknown key')
 
-
-def drawCall(shaderProgram, shape):
-
-    # Binding the proper buffers
-    glBindVertexArray(shape.vao)
-    glBindBuffer(GL_ARRAY_BUFFER, shape.vbo)
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, shape.ebo)
-
-    # Setting up the location of the attributes position and color from the VBO
-    # A vertex attribute has 3 integers for the position (each is 4 bytes),
-    # and 3 numbers to represent the color (each is 4 bytes),
-    # Henceforth, we have 3*4 + 3*4 = 24 bytes
-    position = glGetAttribLocation(shaderProgram, "position")
-    glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, 24, ctypes.c_void_p(0))
-    glEnableVertexAttribArray(position)
-    
-    color = glGetAttribLocation(shaderProgram, "color")
-    glVertexAttribPointer(color, 3, GL_FLOAT, GL_FALSE, 24, ctypes.c_void_p(12))
-    glEnableVertexAttribArray(color)
-
-    # Render the active element buffer with the active shader program
-    glDrawElements(GL_TRIANGLES, shape.size, GL_UNSIGNED_INT, None)
-
-
-def createQuad():
-
-    # Here the new shape will be stored
-    gpuShape = GPUShape()
-
-    # Defining locations and colors for each vertex of the shape
-    
-    vertexData = np.array([
-    #   positions        colors
-        -0.5, -0.5, 0.0,  1.0, 0.0, 0.0,
-         0.5, -0.5, 0.0,  0.0, 1.0, 0.0,
-         0.5,  0.5, 0.0,  0.0, 0.0, 1.0,
-        -0.5,  0.5, 0.0,  1.0, 1.0, 1.0
-    # It is important to use 32 bits data
-        ], dtype = np.float32)
-
-    # Defining connections among vertices
-    # We have a triangle every 3 indices specified
-    indices = np.array(
-        [0, 1, 2,
-         2, 3, 0], dtype= np.uint32)
-
-    gpuShape.size = len(indices)
-
-    # VAO, VBO and EBO and  for the shape
-    gpuShape.vao = glGenVertexArrays(1)
-    gpuShape.vbo = glGenBuffers(1)
-    gpuShape.ebo = glGenBuffers(1)
-
-    # Vertex data must be attached to a Vertex Buffer Object (VBO)
-    glBindBuffer(GL_ARRAY_BUFFER, gpuShape.vbo)
-    glBufferData(GL_ARRAY_BUFFER, len(vertexData) * SIZE_IN_BYTES, vertexData, GL_STATIC_DRAW)
-
-    # Connections among vertices are stored in the Elements Buffer Object (EBO)
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gpuShape.ebo)
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, len(indices) * SIZE_IN_BYTES, indices, GL_STATIC_DRAW)
-
-    return gpuShape
-
-checked = True
 
 def transformGuiOverlay(locationX, locationY, angle, color):
 
@@ -160,6 +94,76 @@ def transformGuiOverlay(locationX, locationY, angle, color):
     return locationX, locationY, angle, color
 
 
+class ModulationTransformShaderProgram:
+
+    def __init__(self):
+
+        vertex_shader = """
+            #version 130
+            
+            uniform mat4 transform;
+
+            in vec3 position;
+            in vec3 color;
+
+            out vec3 newColor;
+
+            void main()
+            {
+                gl_Position = transform * vec4(position, 1.0f);
+                newColor = color;
+            }
+            """
+
+        fragment_shader = """
+            #version 130
+
+            in vec3 newColor;
+            out vec4 outColor;
+
+            uniform vec3 modulationColor;
+
+            void main()
+            {
+                outColor = vec4(modulationColor, 1.0f) * vec4(newColor, 1.0f);
+            }
+            """
+
+        self.shaderProgram = OpenGL.GL.shaders.compileProgram(
+            OpenGL.GL.shaders.compileShader(vertex_shader, OpenGL.GL.GL_VERTEX_SHADER),
+            OpenGL.GL.shaders.compileShader(fragment_shader, OpenGL.GL.GL_FRAGMENT_SHADER))
+
+
+    def setupVAO(self, gpuShape):
+        glBindVertexArray(gpuShape.vao)
+
+        glBindBuffer(GL_ARRAY_BUFFER, gpuShape.vbo)
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gpuShape.ebo)
+
+        # 3d vertices + rgb color specification => 3*4 + 3*4 = 24 bytes
+        position = glGetAttribLocation(self.shaderProgram, "position")
+        glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, 24, ctypes.c_void_p(0))
+        glEnableVertexAttribArray(position)
+        
+        color = glGetAttribLocation(self.shaderProgram, "color")
+        glVertexAttribPointer(color, 3, GL_FLOAT, GL_FALSE, 24, ctypes.c_void_p(12))
+        glEnableVertexAttribArray(color)
+
+        # Unbinding current vao
+        glBindVertexArray(0)
+
+
+    def drawCall(self, shape, mode=GL_TRIANGLES):
+        assert isinstance(shape, GPUShape)
+
+        # Binding the VAO and executing the draw call
+        glBindVertexArray(shape.vao)
+        glDrawElements(mode, shape.size, GL_UNSIGNED_INT, None)
+        
+        # Unbind the current VAO
+        glBindVertexArray(0)
+
+
 if __name__ == "__main__":
 
     # Initialize glfw
@@ -177,50 +181,18 @@ if __name__ == "__main__":
 
     glfw.make_context_current(window)
 
-    # Defining shaders for our pipeline
-    vertex_shader = """
-    #version 130
-    in vec3 position;
-    in vec3 color;
-
-    out vec3 fragColor;
-
-    uniform mat4 transform;
-
-    void main()
-    {
-        fragColor = color;
-        gl_Position = transform * vec4(position, 1.0f);
-    }
-    """
-
-    fragment_shader = """
-    #version 130
-
-    in vec3 fragColor;
-    out vec4 outColor;
-
-    uniform vec3 modulationColor;
-
-    void main()
-    {
-        outColor = vec4(modulationColor, 1.0f) * vec4(fragColor, 1.0f);
-    }
-    """
-
-    # Assembling the shader program (pipeline) with both shaders
-    shaderProgram = OpenGL.GL.shaders.compileProgram(
-        OpenGL.GL.shaders.compileShader(vertex_shader, GL_VERTEX_SHADER),
-        OpenGL.GL.shaders.compileShader(fragment_shader, GL_FRAGMENT_SHADER))
-    
-    # Telling OpenGL to use our shader program
-    glUseProgram(shaderProgram)
+    # Creating our shader program and telling OpenGL to use it
+    pipeline = ModulationTransformShaderProgram()
+    glUseProgram(pipeline.shaderProgram)
 
     # Setting up the clear screen color
     glClearColor(0.15, 0.15, 0.15, 1.0)
 
     # Creating shapes on GPU memory
-    gpuQuad = createQuad()
+    shapeQuad = bs.createRainbowQuad()
+    gpuQuad = es.GPUShape().initBuffers()
+    pipeline.setupVAO(gpuQuad)
+    gpuQuad.fillBuffers(shapeQuad.vertices, shapeQuad.indices, GL_STATIC_DRAW)
 
 
     # initilize imgui context (see documentation)
@@ -250,8 +222,6 @@ if __name__ == "__main__":
         #print(io.want_capture_mouse, io.want_capture_keyboard)
         glfw.poll_events()
 
-        
-
         # Filling or not the shapes depending on the controller state
         if (controller.fillPolygon):
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
@@ -267,18 +237,18 @@ if __name__ == "__main__":
         locationX, locationY, angle, color = \
             transformGuiOverlay(locationX, locationY, angle, color)
 
-        # Drawing the Quad
-        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "transform"), 1, GL_TRUE,
+        # Setting uniforms and drawing the Quad
+        glUniformMatrix4fv(glGetUniformLocation(pipeline.shaderProgram, "transform"), 1, GL_TRUE,
             np.matmul(
                 tr.translate(locationX, locationY, 0.0),
                 tr.rotationZ(angle)
             )
         )
-        glUniform3f(glGetUniformLocation(shaderProgram, "modulationColor"),
+        glUniform3f(glGetUniformLocation(pipeline.shaderProgram, "modulationColor"),
             color[0], color[1], color[2])
-        drawCall(shaderProgram, gpuQuad)
+        pipeline.drawCall(gpuQuad)
 
-        # drawing the imgui texture over our drawing
+        # Drawing the imgui texture over our drawing
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
         impl.render(imgui.get_draw_data())
 
