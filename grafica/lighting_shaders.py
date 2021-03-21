@@ -84,13 +84,12 @@ class SimpleFlatShaderProgram():
             OpenGL.GL.shaders.compileShader(fragment_shader, OpenGL.GL.GL_FRAGMENT_SHADER))
 
 
-    def drawCall(self, shape, mode=GL_TRIANGLES):
-        assert isinstance(shape, GPUShape)
+    def setupVAO(self, gpuShape):
 
-        # Binding the proper buffers
-        glBindVertexArray(shape.vao)
-        glBindBuffer(GL_ARRAY_BUFFER, shape.vbo)
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, shape.ebo)
+        glBindVertexArray(gpuShape.vao)
+
+        glBindBuffer(GL_ARRAY_BUFFER, gpuShape.vbo)
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gpuShape.ebo)
 
         # 3d vertices + rgb color + 3d normals => 3*4 + 3*4 + 3*4 = 36 bytes
         position = glGetAttribLocation(self.shaderProgram, "position")
@@ -105,8 +104,19 @@ class SimpleFlatShaderProgram():
         glVertexAttribPointer(normal, 3, GL_FLOAT, GL_FALSE, 36, ctypes.c_void_p(24))
         glEnableVertexAttribArray(normal)
 
-        # Render the active element buffer with the active shader program
-        glDrawElements(mode, shape.size, GL_UNSIGNED_INT, None)
+        # Unbinding current vao
+        glBindVertexArray(0)
+
+
+    def drawCall(self, gpuShape, mode=GL_TRIANGLES):
+        assert isinstance(gpuShape, GPUShape)
+
+        # Binding the VAO and executing the draw call
+        glBindVertexArray(gpuShape.vao)
+        glDrawElements(mode, gpuShape.size, GL_UNSIGNED_INT, None)
+
+        # Unbind the current VAO
+        glBindVertexArray(0)
 
 
 class SimpleTextureFlatShaderProgram():
@@ -195,14 +205,12 @@ class SimpleTextureFlatShaderProgram():
             OpenGL.GL.shaders.compileShader(fragment_shader, OpenGL.GL.GL_FRAGMENT_SHADER))
 
 
-    def drawCall(self, shape, mode=GL_TRIANGLES):
-        assert isinstance(shape, GPUShape)
+    def setupVAO(self, gpuShape):
 
-        # Binding the proper buffers
-        glBindVertexArray(shape.vao)
-        glBindBuffer(GL_ARRAY_BUFFER, shape.vbo)
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, shape.ebo)
-        glBindTexture(GL_TEXTURE_2D, shape.texture)
+        glBindVertexArray(gpuShape.vao)
+
+        glBindBuffer(GL_ARRAY_BUFFER, gpuShape.vbo)
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gpuShape.ebo)
 
         # 3d vertices + rgb color + 3d normals => 3*4 + 2*4 + 3*4 = 32 bytes
         position = glGetAttribLocation(self.shaderProgram, "position")
@@ -217,8 +225,21 @@ class SimpleTextureFlatShaderProgram():
         glVertexAttribPointer(normal, 3, GL_FLOAT, GL_FALSE, 32, ctypes.c_void_p(20))
         glEnableVertexAttribArray(normal)
 
-        # Render the active element buffer with the active shader program
-        glDrawElements(mode, shape.size, GL_UNSIGNED_INT, None)
+        # Unbinding current vao
+        glBindVertexArray(0)
+
+
+    def drawCall(self, gpuShape, mode=GL_TRIANGLES):
+        assert isinstance(gpuShape, GPUShape)
+
+        # Binding the VAO and executing the draw call
+        glBindVertexArray(gpuShape.vao)
+        glBindTexture(GL_TEXTURE_2D, gpuShape.texture)
+
+        glDrawElements(mode, gpuShape.size, GL_UNSIGNED_INT, None)
+
+        # Unbind the current VAO
+        glBindVertexArray(0)
 
 
 class SimpleGouraudShaderProgram():
@@ -300,13 +321,12 @@ class SimpleGouraudShaderProgram():
             OpenGL.GL.shaders.compileShader(fragment_shader, OpenGL.GL.GL_FRAGMENT_SHADER))
 
 
-    def drawCall(self, shape, mode=GL_TRIANGLES):
-        assert isinstance(shape, GPUShape)
+    def setupVAO(self, gpuShape):
 
-        # Binding the proper buffers
-        glBindVertexArray(shape.vao)
-        glBindBuffer(GL_ARRAY_BUFFER, shape.vbo)
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, shape.ebo)
+        glBindVertexArray(gpuShape.vao)
+
+        glBindBuffer(GL_ARRAY_BUFFER, gpuShape.vbo)
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gpuShape.ebo)
 
         # 3d vertices + rgb color + 3d normals => 3*4 + 3*4 + 3*4 = 36 bytes
         position = glGetAttribLocation(self.shaderProgram, "position")
@@ -321,8 +341,19 @@ class SimpleGouraudShaderProgram():
         glVertexAttribPointer(normal, 3, GL_FLOAT, GL_FALSE, 36, ctypes.c_void_p(24))
         glEnableVertexAttribArray(normal)
 
-        # Render the active element buffer with the active shader program
-        glDrawElements(mode, shape.size, GL_UNSIGNED_INT, None)
+        # Unbinding current vao
+        glBindVertexArray(0)
+
+
+    def drawCall(self, gpuShape, mode=GL_TRIANGLES):
+        assert isinstance(gpuShape, GPUShape)
+
+        # Binding the VAO and executing the draw call
+        glBindVertexArray(gpuShape.vao)
+        glDrawElements(mode, gpuShape.size, GL_UNSIGNED_INT, None)
+
+        # Unbind the current VAO
+        glBindVertexArray(0)
 
 
 class SimpleTextureGouraudShaderProgram():
@@ -411,14 +442,12 @@ class SimpleTextureGouraudShaderProgram():
             OpenGL.GL.shaders.compileShader(fragment_shader, OpenGL.GL.GL_FRAGMENT_SHADER))
 
 
-    def drawCall(self, shape, mode=GL_TRIANGLES):
-        assert isinstance(shape, GPUShape)
+    def setupVAO(self, gpuShape):
 
-        # Binding the proper buffers
-        glBindVertexArray(shape.vao)
-        glBindBuffer(GL_ARRAY_BUFFER, shape.vbo)
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, shape.ebo)
-        glBindTexture(GL_TEXTURE_2D, shape.texture)
+        glBindVertexArray(gpuShape.vao)
+
+        glBindBuffer(GL_ARRAY_BUFFER, gpuShape.vbo)
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gpuShape.ebo)
 
         # 3d vertices + rgb color + 3d normals => 3*4 + 2*4 + 3*4 = 32 bytes
         position = glGetAttribLocation(self.shaderProgram, "position")
@@ -433,8 +462,21 @@ class SimpleTextureGouraudShaderProgram():
         glVertexAttribPointer(normal, 3, GL_FLOAT, GL_FALSE, 32, ctypes.c_void_p(20))
         glEnableVertexAttribArray(normal)
 
-        # Render the active element buffer with the active shader program
-        glDrawElements(mode, shape.size, GL_UNSIGNED_INT, None)
+        # Unbinding current vao
+        glBindVertexArray(0)
+
+
+    def drawCall(self, gpuShape, mode=GL_TRIANGLES):
+        assert isinstance(gpuShape, GPUShape)
+
+        # Binding the VAO and executing the draw call
+        glBindVertexArray(gpuShape.vao)
+        glBindTexture(GL_TEXTURE_2D, gpuShape.texture)
+
+        glDrawElements(mode, gpuShape.size, GL_UNSIGNED_INT, None)
+
+        # Unbind the current VAO
+        glBindVertexArray(0)
 
 
 class SimplePhongShaderProgram:
@@ -522,13 +564,12 @@ class SimplePhongShaderProgram:
             OpenGL.GL.shaders.compileShader(fragment_shader, OpenGL.GL.GL_FRAGMENT_SHADER))
 
 
-    def drawCall(self, shape, mode=GL_TRIANGLES):
-        assert isinstance(shape, GPUShape)
+    def setupVAO(self, gpuShape):
 
-        # Binding the proper buffers
-        glBindVertexArray(shape.vao)
-        glBindBuffer(GL_ARRAY_BUFFER, shape.vbo)
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, shape.ebo)
+        glBindVertexArray(gpuShape.vao)
+
+        glBindBuffer(GL_ARRAY_BUFFER, gpuShape.vbo)
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gpuShape.ebo)
 
         # 3d vertices + rgb color + 3d normals => 3*4 + 3*4 + 3*4 = 36 bytes
         position = glGetAttribLocation(self.shaderProgram, "position")
@@ -543,8 +584,19 @@ class SimplePhongShaderProgram:
         glVertexAttribPointer(normal, 3, GL_FLOAT, GL_FALSE, 36, ctypes.c_void_p(24))
         glEnableVertexAttribArray(normal)
 
-        # Render the active element buffer with the active shader program
-        glDrawElements(mode, shape.size, GL_UNSIGNED_INT, None)
+        # Unbinding current vao
+        glBindVertexArray(0)
+
+
+    def drawCall(self, gpuShape, mode=GL_TRIANGLES):
+        assert isinstance(gpuShape, GPUShape)
+
+        # Binding the VAO and executing the draw call
+        glBindVertexArray(gpuShape.vao)
+        glDrawElements(mode, gpuShape.size, GL_UNSIGNED_INT, None)
+
+        # Unbind the current VAO
+        glBindVertexArray(0)
 
 
 class SimpleTexturePhongShaderProgram:
@@ -636,27 +688,39 @@ class SimpleTexturePhongShaderProgram:
             OpenGL.GL.shaders.compileShader(fragment_shader, OpenGL.GL.GL_FRAGMENT_SHADER))
 
 
-    def drawCall(self, shape, mode=GL_TRIANGLES):
-        assert isinstance(shape, GPUShape)
+    def setupVAO(self, gpuShape):
 
-        # Binding the proper buffers
-        glBindVertexArray(shape.vao)
-        glBindBuffer(GL_ARRAY_BUFFER, shape.vbo)
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, shape.ebo)
-        glBindTexture(GL_TEXTURE_2D, shape.texture)
+        glBindVertexArray(gpuShape.vao)
 
-        # 3d vertices + 2d texture coordinates + 3d normals => 3*4 + 2*4 + 3*4 = 32 bytes
+        glBindBuffer(GL_ARRAY_BUFFER, gpuShape.vbo)
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gpuShape.ebo)
+
+        # 3d vertices + rgb color + 3d normals => 3*4 + 2*4 + 3*4 = 32 bytes
         position = glGetAttribLocation(self.shaderProgram, "position")
         glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, 32, ctypes.c_void_p(0))
         glEnableVertexAttribArray(position)
         
-        texCoords = glGetAttribLocation(self.shaderProgram, "texCoords")
-        glVertexAttribPointer(texCoords, 2, GL_FLOAT, GL_FALSE, 32, ctypes.c_void_p(12))
-        glEnableVertexAttribArray(texCoords)
+        color = glGetAttribLocation(self.shaderProgram, "texCoords")
+        glVertexAttribPointer(color, 2, GL_FLOAT, GL_FALSE, 32, ctypes.c_void_p(12))
+        glEnableVertexAttribArray(color)
 
         normal = glGetAttribLocation(self.shaderProgram, "normal")
         glVertexAttribPointer(normal, 3, GL_FLOAT, GL_FALSE, 32, ctypes.c_void_p(20))
         glEnableVertexAttribArray(normal)
 
-        # Render the active element buffer with the active shader program
-        glDrawElements(mode, shape.size, GL_UNSIGNED_INT, None)
+        # Unbinding current vao
+        glBindVertexArray(0)
+
+
+    def drawCall(self, gpuShape, mode=GL_TRIANGLES):
+        assert isinstance(gpuShape, GPUShape)
+
+        # Binding the VAO and executing the draw call
+        glBindVertexArray(gpuShape.vao)
+        glBindTexture(GL_TEXTURE_2D, gpuShape.texture)
+
+        glDrawElements(mode, gpuShape.size, GL_UNSIGNED_INT, None)
+
+        # Unbind the current VAO
+        glBindVertexArray(0)
+

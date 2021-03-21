@@ -117,13 +117,24 @@ if __name__ == "__main__":
     # and which one is at the back
     glEnable(GL_DEPTH_TEST)
 
+    # Convenience function to ease initialization
+    def createGPUShape(pipeline, shape):
+        gpuShape = es.GPUShape().initBuffers()
+        pipeline.setupVAO(gpuShape)
+        gpuShape.fillBuffers(shape.vertices, shape.indices, GL_STATIC_DRAW)
+        return gpuShape
+
     # Creating shapes on GPU memory
-    gpuAxis = es.toGPUShape(bs.createAxis(4), GL_STATIC_DRAW)
-    gpuRedCube = es.toGPUShape(bs.createColorNormalsCube(1,0,0), GL_STATIC_DRAW)
-    gpuGreenCube = es.toGPUShape(bs.createColorNormalsCube(0,1,0), GL_STATIC_DRAW)
-    gpuBlueCube = es.toGPUShape(bs.createColorNormalsCube(0,0,1), GL_STATIC_DRAW)
-    gpuYellowCube = es.toGPUShape(bs.createColorNormalsCube(1,1,0), GL_STATIC_DRAW)
-    gpuRainbowCube = es.toGPUShape(bs.createRainbowNormalsCube(), GL_STATIC_DRAW)
+    gpuAxis = createGPUShape(mvpPipeline, bs.createAxis(4))
+
+    # Note: the vertex attribute layout is the same for the 3 lighting pipelines in this case:
+    # flatPipeline, gouraudPipeline and phongPipeline. Hence, the VAO setup can be the same.
+    gpuRedCube = createGPUShape(gouraudPipeline, bs.createColorNormalsCube(1,0,0))
+    gpuGreenCube = createGPUShape(gouraudPipeline, bs.createColorNormalsCube(0,1,0))
+    gpuBlueCube = createGPUShape(gouraudPipeline, bs.createColorNormalsCube(0,0,1))
+    gpuYellowCube = createGPUShape(gouraudPipeline, bs.createColorNormalsCube(1,1,0))
+    gpuRainbowCube = createGPUShape(gouraudPipeline, bs.createRainbowNormalsCube())
+
 
     t0 = glfw.get_time()
     camera_theta = np.pi/4
