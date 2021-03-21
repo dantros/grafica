@@ -273,12 +273,12 @@ class SimpleTransformShaderProgram:
         glBindVertexArray(0)
 
 
-    def drawCall(self, shape, mode=GL_TRIANGLES):
-        assert isinstance(shape, GPUShape)
+    def drawCall(self, gpuShape, mode=GL_TRIANGLES):
+        assert isinstance(gpuShape, GPUShape)
 
         # Binding the VAO and executing the draw call
-        glBindVertexArray(shape.vao)
-        glDrawElements(mode, shape.size, GL_UNSIGNED_INT, None)
+        glBindVertexArray(gpuShape.vao)
+        glDrawElements(mode, gpuShape.size, GL_UNSIGNED_INT, None)
         
         # Unbind the current VAO
         glBindVertexArray(0)
@@ -346,12 +346,12 @@ class SimpleTextureTransformShaderProgram:
         glBindVertexArray(0)
 
 
-    def drawCall(self, gpuShape):
+    def drawCall(self, gpuShape, mode=GL_TRIANGLES):
         assert isinstance(gpuShape, GPUShape)
 
         glBindVertexArray(gpuShape.vao)
         glBindTexture(GL_TEXTURE_2D, gpuShape.texture)
-        glDrawElements(GL_TRIANGLES, gpuShape.size, GL_UNSIGNED_INT, None)
+        glDrawElements(mode, gpuShape.size, GL_UNSIGNED_INT, None)
 
         # Unbind the current VAO
         glBindVertexArray(0)
