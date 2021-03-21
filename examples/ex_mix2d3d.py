@@ -85,8 +85,15 @@ if __name__ == "__main__":
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
     # Creating shapes on GPU memory
-    gpuRainbowCube = es.toGPUShape(bs.createRainbowCube(), GL_STATIC_DRAW)
-    gpuAxis = es.toGPUShape(bs.createAxis(2), GL_STATIC_DRAW)
+    cpuAxis = bs.createAxis(7)
+    gpuAxis = es.GPUShape().initBuffers()
+    mvpPipeline.setupVAO(gpuAxis)
+    gpuAxis.fillBuffers(cpuAxis.vertices, cpuAxis.indices, GL_STATIC_DRAW)
+
+    rainbowCube = bs.createRainbowCube()
+    gpuRainbowCube = es.GPUShape().initBuffers()
+    mvpPipeline.setupVAO(gpuRainbowCube)
+    gpuRainbowCube.fillBuffers(rainbowCube.vertices, rainbowCube.indices, GL_STATIC_DRAW)
 
     shapeBoo = bs.createTextureQuad(1,1)
     gpuBoo = es.GPUShape().initBuffers()
