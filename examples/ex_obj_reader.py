@@ -135,9 +135,7 @@ if __name__ == "__main__":
     glfw.set_key_callback(window, on_key)
 
     # Defining shader programs
-    #pipeline = ls.SimpleFlatShaderProgram()
     pipeline = ls.SimpleGouraudShaderProgram()
-    #pipeline = ls.SimplePhongShaderProgram()
     mvpPipeline = es.SimpleModelViewProjectionShaderProgram()
 
     # Telling OpenGL to use our shader program
@@ -150,12 +148,21 @@ if __name__ == "__main__":
     # and which one is at the back
     glEnable(GL_DEPTH_TEST)
 
+    # Convenience function to ease initialization
+    def createGPUShape(pipeline, shape):
+        gpuShape = es.GPUShape().initBuffers()
+        pipeline.setupVAO(gpuShape)
+        gpuShape.fillBuffers(shape.vertices, shape.indices, GL_STATIC_DRAW)
+        return gpuShape
+
     # Creating shapes on GPU memory
-    gpuAxis = es.toGPUShape(bs.createAxis(7), GL_STATIC_DRAW)
-    shapeSuzanne = readOBJ(getAssetPath('suzanne.obj'), (0.9,0.6,0.2))
-    gpuSuzanne = es.toGPUShape(shapeSuzanne, GL_STATIC_DRAW)
-    shapeCarrot = readOBJ(getAssetPath('carrot.obj'), (0.6,0.9,0.5))
-    gpuCarrot = es.toGPUShape(shapeCarrot, GL_STATIC_DRAW)
+    gpuAxis = createGPUShape(mvpPipeline, bs.createAxis(7))
+
+    shapeSuzanne = readOBJ(getAssetPath('suzanne.obj'), (0.9, 0.6, 0.2))
+    gpuSuzanne = createGPUShape(pipeline, shapeSuzanne)
+
+    shapeCarrot = readOBJ(getAssetPath('carrot.obj'), (0.6, 0.9, 0.5))
+    gpuCarrot = createGPUShape(pipeline, shapeCarrot)
 
     t0 = glfw.get_time()
     camera_theta = -3*np.pi/4

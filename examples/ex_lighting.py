@@ -127,8 +127,9 @@ if __name__ == "__main__":
     # Creating shapes on GPU memory
     gpuAxis = createGPUShape(mvpPipeline, bs.createAxis(4))
 
-    # Note: the vertex attribute layout is the same for the 3 lighting pipelines in this case:
-    # flatPipeline, gouraudPipeline and phongPipeline. Hence, the VAO setup can be the same.
+    # Note: the vertex attribute layout (stride) is the same for the 3 lighting pipelines in
+    # this case: flatPipeline, gouraudPipeline and phongPipeline. Hence, the VAO setup can
+    # be the same.
     gpuRedCube = createGPUShape(gouraudPipeline, bs.createColorNormalsCube(1,0,0))
     gpuGreenCube = createGPUShape(gouraudPipeline, bs.createColorNormalsCube(0,1,0))
     gpuBlueCube = createGPUShape(gouraudPipeline, bs.createColorNormalsCube(0,0,1))
