@@ -5,8 +5,7 @@ import glfw
 from OpenGL.GL import *
 import OpenGL.GL.shaders
 import numpy as np
-import sys
-import os.path
+import sys, os.path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from grafica.gpu_shape import GPUShape, SIZE_IN_BYTES
 import grafica.transformations as tr

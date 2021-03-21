@@ -119,7 +119,7 @@ if __name__ == "__main__":
     # Connecting the callback function 'on_key' to handle keyboard events
     glfw.set_key_callback(window, on_key)
 
-    # Creating shader programs for textures and for colores
+    # Creating shader programs for textures and for colors
     textureShaderProgram = es.SimpleTextureModelViewProjectionShaderProgram()
     colorShaderProgram = es.SimpleModelViewProjectionShaderProgram()
 
