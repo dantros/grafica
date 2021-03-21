@@ -334,6 +334,9 @@ class SimpleTextureTransformShaderProgram:
         glBindTexture(GL_TEXTURE_2D, gpuShape.texture)
         glDrawElements(GL_TRIANGLES, gpuShape.size, GL_UNSIGNED_INT, None)
 
+        # Unbind the current VAO
+        glBindVertexArray(0)
+
 
     def drawCall(self, shape, mode=GL_TRIANGLES):
         assert isinstance(shape, GPUShape)
