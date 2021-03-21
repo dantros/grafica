@@ -132,10 +132,16 @@ if __name__ == "__main__":
 
     # Creating shapes on GPU memory
     shapeDice = createDice()
-    textureDice = es.textureSimpleSetup(
+    gpuDice = es.GPUShape().initBuffers()
+    textureShaderProgram.setupVAO(gpuDice)
+    gpuDice.fillBuffers(shapeDice.vertices, shapeDice.indices, GL_STATIC_DRAW)
+    gpuDice.texture = es.textureSimpleSetup(
         getAssetPath("dice_blue.jpg"), GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR)
-    gpuDice = es.toGPUShape(shapeDice, GL_STATIC_DRAW, textureDice)
-    gpuAxis = es.toGPUShape(bs.createAxis(2), GL_STATIC_DRAW)
+
+    cpuAxis = bs.createAxis(2)
+    gpuAxis = es.GPUShape().initBuffers()
+    colorShaderProgram.setupVAO(gpuAxis)
+    gpuAxis.fillBuffers(cpuAxis.vertices, cpuAxis.indices, GL_STATIC_DRAW)
 
     while not glfw.window_should_close(window):
         # Using GLFW to check for input events

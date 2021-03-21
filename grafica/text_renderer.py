@@ -180,6 +180,7 @@ class TextureTextRendererShaderProgram:
 
         # Binding the VAO and executing the draw call
         glBindVertexArray(gpuShape.vao)
+        glBindTexture(GL_TEXTURE_3D, gpuShape.texture)
         glDrawElements(mode, gpuShape.size, GL_UNSIGNED_INT, None)
         
         # Unbind the current VAO

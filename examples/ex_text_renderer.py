@@ -121,7 +121,7 @@ if __name__ == "__main__":
     gpuDate.fillBuffers(dateShape.vertices, dateShape.indices, GL_STATIC_DRAW)
     gpuTime.fillBuffers(timeShape.vertices, timeShape.indices, GL_STATIC_DRAW)
     gpuDate.texture = gpuText3DTexture
-    gpuDate.texture = gpuText3DTexture
+    gpuTime.texture = gpuText3DTexture
 
     second = now.second
     color = [1.0,1.0,1.0]
