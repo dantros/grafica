@@ -7,7 +7,6 @@ import OpenGL.GL.shaders
 import numpy as np
 import sys, os.path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from grafica.gpu_shape import GPUShape
 import grafica.basic_shapes as bs
 import grafica.easy_shaders as es
 import grafica.transformations as tr
