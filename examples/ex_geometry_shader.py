@@ -8,12 +8,14 @@ import glfw
 from OpenGL.GL import *
 import OpenGL.GL.shaders
 import numpy as np
-import sys, os.path
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from grafica.gpu_shape import GPUShape, SIZE_IN_BYTES
 
 __author__ = "Daniel Calderon"
 __license__ = "MIT"
+
+
+# We will use 32 bits data, so floats and integers have 4 bytes
+# 1 byte = 8 bits
+SIZE_IN_BYTES = 4
 
 
 # A class to store the application control
@@ -64,7 +66,7 @@ def createShaderProgram():
     geometry_shader = """
     #version 330 core
     layout (points) in;
-    layout (triangle_strip, max_vertices = 5) out;
+    layout (triangle_strip, max_vertices = 4) out;
 
     in VS_OUT {
         vec3 color;
@@ -72,25 +74,51 @@ def createShaderProgram():
 
     out vec3 fColor;
 
-    void build_house(vec4 position)
-    {    
-        fColor = gs_in[0].color; // gs_in[0] since there's only one input vertex
-        gl_Position = position + vec4(-0.2, -0.2, 0.0, 0.0); // 1:bottom-left   
-        EmitVertex();   
-        gl_Position = position + vec4( 0.2, -0.2, 0.0, 0.0); // 2:bottom-right
-        EmitVertex();
-        gl_Position = position + vec4(-0.2,  0.2, 0.0, 0.0); // 3:top-left
-        EmitVertex();
-        gl_Position = position + vec4( 0.2,  0.2, 0.0, 0.0); // 4:top-right
-        EmitVertex();
-        gl_Position = position + vec4( 0.0,  0.4, 0.0, 0.0); // 5:top
+    vec3 blueish(in vec3 color)
+    {
+        vec3 outColor = color;
+        outColor.r -= 0.5;
+        outColor.g -= 0.5;
+        outColor.b += 0.5;
+        outColor = clamp(outColor, 0.0, 1.0);
+        return outColor;
+    }
+
+    vec3 yellowish(in vec3 color)
+    {
+        vec3 outColor = color;
+        outColor.r += 0.5;
+        outColor.g += 0.5;
+        outColor.b -= 0.5;
+        outColor = clamp(outColor, 0.0, 1.0);
+        return outColor;
+    }
+
+    void niceQuad(in vec4 position)
+    {
+        vec3 color = gs_in[0].color; // gs_in[0] since there's only one input vertex
+
+        gl_Position = position + vec4(-0.2, -0.2, 0.0, 0.0); // 1:bottom-left
         fColor = vec3(1.0, 1.0, 1.0);
         EmitVertex();
+
+        gl_Position = position + vec4( 0.2, -0.2, 0.0, 0.0); // 2:bottom-right
+        fColor = blueish(color);
+        EmitVertex();
+
+        gl_Position = position + vec4(-0.2,  0.2, 0.0, 0.0); // 3:top-left
+        fColor = yellowish(color);
+        EmitVertex();
+
+        gl_Position = position + vec4( 0.2,  0.2, 0.0, 0.0); // 4:top-right
+        fColor = vec3(0.0, 0.0, 0.0);
+        EmitVertex();
+
         EndPrimitive();
     }
 
     void main() {    
-        build_house(gl_in[0].gl_Position);
+        niceQuad(gl_in[0].gl_Position);
     }
     """
 
@@ -117,9 +145,6 @@ def createShaderProgram():
 
 def createGPUPoints():
 
-    # Here the new shape will be stored
-    gpuShape = GPUShape()
-
     # Defining locations and colors for each vertex
     
     vertexData = np.array([
@@ -131,18 +156,17 @@ def createGPUPoints():
     # It is important to use 32 bits data
         ], dtype = np.float32)
 
-    gpuShape.size = len(vertexData)
+    size = len(vertexData) // 5
 
     # VAO, VBO and EBO and  for the shape
-    gpuShape.vao = glGenVertexArrays(1)
-    gpuShape.vbo = glGenBuffers(1)
-    gpuShape.ebo = None
+    vao = glGenVertexArrays(1)
+    vbo = glGenBuffers(1)
 
     # binding the generated vao
-    glBindVertexArray(gpuShape.vao)
+    glBindVertexArray(vao)
 
     # Vertex data must be attached to a Vertex Buffer Object (VBO)
-    glBindBuffer(GL_ARRAY_BUFFER, gpuShape.vbo)
+    glBindBuffer(GL_ARRAY_BUFFER, vbo)
     glBufferData(GL_ARRAY_BUFFER, len(vertexData) * SIZE_IN_BYTES, vertexData, GL_STATIC_DRAW)
     
     # position
@@ -156,7 +180,7 @@ def createGPUPoints():
     # unbinding current vao
     glBindVertexArray(0)
 
-    return gpuShape
+    return vao, vbo, size
 
 
 if __name__ == "__main__":
@@ -184,7 +208,7 @@ if __name__ == "__main__":
     glUseProgram(shaderProgram)
 
     # Creating shapes on GPU memory
-    gpuPoints = createGPUPoints()
+    vao, vbo, size = createGPUPoints()
 
     # Setting up the clear screen color
     glClearColor(0.15, 0.15, 0.15, 1.0)
@@ -203,13 +227,14 @@ if __name__ == "__main__":
         glClear(GL_COLOR_BUFFER_BIT)
 
         # Drawing: binding the VAO and executing the draw call...
-        glBindVertexArray(gpuPoints.vao)
-        glDrawArrays(GL_POINTS, 0, 4)
+        glBindVertexArray(vao)
+        glDrawArrays(GL_POINTS, 0, size)
 
         # Once the render is done, buffers are swapped, showing only the complete scene.
         glfw.swap_buffers(window)
 
     # freeing GPU memory
-    gpuPoints.clear()
+    glDeleteBuffers(1, [vbo])
+    glDeleteVertexArrays(1, [vao])
 
     glfw.terminate()
