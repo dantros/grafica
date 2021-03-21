@@ -121,7 +121,10 @@ if __name__ == "__main__":
     glEnable(GL_DEPTH_TEST)
 
     # Creating shapes on GPU memory
-    gpuAxis = es.toGPUShape(bs.createAxis(7), GL_STATIC_DRAW)
+    cpuAxis = bs.createAxis(7)
+    gpuAxis = es.GPUShape().initBuffers()
+    pipeline.setupVAO(gpuAxis)
+    gpuAxis.fillBuffers(cpuAxis.vertices, cpuAxis.indices, GL_STATIC_DRAW)
 
     simpleParaboloid = lambda x, y: paraboloid(x, y, 3.0, 3.0)
 
@@ -129,7 +132,9 @@ if __name__ == "__main__":
     xs = np.ogrid[-10:10:40j]
     ys = np.ogrid[-10:10:40j]
     cpuSurface = generateMesh(xs, ys, simpleParaboloid, [1,0,0])
-    gpuSurface = es.toGPUShape(cpuSurface, GL_STATIC_DRAW)
+    gpuSurface = es.GPUShape().initBuffers()
+    pipeline.setupVAO(gpuSurface)
+    gpuSurface.fillBuffers(cpuSurface.vertices, cpuSurface.indices, GL_STATIC_DRAW)
 
     t0 = glfw.get_time()
     camera_theta = np.pi/7

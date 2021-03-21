@@ -135,7 +135,7 @@ class SimpleShaderProgram:
 
         # Binding the VAO and executing the draw call
         glBindVertexArray(gpuShape.vao)
-        glDrawElements(GL_TRIANGLES, gpuShape.size, GL_UNSIGNED_INT, None)
+        glDrawElements(mode, gpuShape.size, GL_UNSIGNED_INT, None)
 
         # Unbind the current VAO
         glBindVertexArray(0)
@@ -387,13 +387,12 @@ class SimpleModelViewProjectionShaderProgram:
             OpenGL.GL.shaders.compileShader(fragment_shader, OpenGL.GL.GL_FRAGMENT_SHADER))
 
 
-    def drawCall(self, shape, mode=GL_TRIANGLES):
-        assert isinstance(shape, GPUShape)
+    def setupVAO(self, gpuShape):
 
-        # Binding the proper buffers
-        glBindVertexArray(shape.vao)
-        glBindBuffer(GL_ARRAY_BUFFER, shape.vbo)
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, shape.ebo)
+        glBindVertexArray(gpuShape.vao)
+
+        glBindBuffer(GL_ARRAY_BUFFER, gpuShape.vbo)
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gpuShape.ebo)
 
         # 3d vertices + rgb color specification => 3*4 + 3*4 = 24 bytes
         position = glGetAttribLocation(self.shaderProgram, "position")
@@ -404,8 +403,19 @@ class SimpleModelViewProjectionShaderProgram:
         glVertexAttribPointer(color, 3, GL_FLOAT, GL_FALSE, 24, ctypes.c_void_p(12))
         glEnableVertexAttribArray(color)
 
-        # Render the active element buffer with the active shader program
-        glDrawElements(mode, shape.size, GL_UNSIGNED_INT, None)
+        # Unbinding current vao
+        glBindVertexArray(0)
+
+
+    def drawCall(self, gpuShape, mode=GL_TRIANGLES):
+        assert isinstance(gpuShape, GPUShape)
+
+        # Binding the VAO and executing the draw call
+        glBindVertexArray(gpuShape.vao)
+        glDrawElements(mode, gpuShape.size, GL_UNSIGNED_INT, None)
+
+        # Unbind the current VAO
+        glBindVertexArray(0)
 
 
 class SimpleTextureModelViewProjectionShaderProgram:
