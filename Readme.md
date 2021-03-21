@@ -358,3 +358,9 @@ Adapted from: https://learnopengl.com/code_viewer_gh.php?code=src/4.advanced_ope
 ### ex_render_to_texture.py
 Render to Texture Example
     
+<p align="center">
+    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_render_to_texture.py">
+    <img src="screenshots/ex_render_to_texture.gif" width="400">
+    </a>
+</p>
+    
