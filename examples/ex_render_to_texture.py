@@ -11,7 +11,6 @@ from grafica.gpu_shape import GPUShape, SIZE_IN_BYTES
 import grafica.transformations as tr
 import grafica.basic_shapes as bs
 import grafica.easy_shaders as es
-from grafica.assets_path import getAssetPath
 
 __author__ = "Daniel Calderon"
 __license__ = "MIT"
