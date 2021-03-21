@@ -327,7 +327,7 @@ class SimpleTextureTransformShaderProgram:
         glBindVertexArray(0)
 
 
-    def drawCall2(self, gpuShape):
+    def drawCall(self, gpuShape):
         assert isinstance(gpuShape, GPUShape)
 
         glBindVertexArray(gpuShape.vao)
@@ -336,28 +336,6 @@ class SimpleTextureTransformShaderProgram:
 
         # Unbind the current VAO
         glBindVertexArray(0)
-
-
-    def drawCall(self, shape, mode=GL_TRIANGLES):
-        assert isinstance(shape, GPUShape)
-
-        # Binding the proper buffers
-        glBindVertexArray(shape.vao)
-        glBindBuffer(GL_ARRAY_BUFFER, shape.vbo)
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, shape.ebo)
-        glBindTexture(GL_TEXTURE_2D, shape.texture)
-
-        # 3d vertices + 2d texture coordinates => 3*4 + 2*4 = 20 bytes
-        position = glGetAttribLocation(self.shaderProgram, "position")
-        glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, 20, ctypes.c_void_p(0))
-        glEnableVertexAttribArray(position)
-        
-        texCoords = glGetAttribLocation(self.shaderProgram, "texCoords")
-        glVertexAttribPointer(texCoords, 2, GL_FLOAT, GL_FALSE, 20, ctypes.c_void_p(12))
-        glEnableVertexAttribArray(texCoords)
-
-        # Render the active element buffer with the active shader program
-        glDrawElements(mode, shape.size, GL_UNSIGNED_INT, None)
 
 
 class SimpleModelViewProjectionShaderProgram:

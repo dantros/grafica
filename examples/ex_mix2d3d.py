@@ -89,9 +89,11 @@ if __name__ == "__main__":
     gpuAxis = es.toGPUShape(bs.createAxis(2), GL_STATIC_DRAW)
 
     shapeBoo = bs.createTextureQuad(1,1)
-    textureBoo = es.textureSimpleSetup(
+    gpuBoo = es.GPUShape().initBuffers()
+    texture2dPipeline.setupVAO(gpuBoo)
+    gpuBoo.fillBuffers(shapeBoo.vertices, shapeBoo.indices, GL_STATIC_DRAW)
+    gpuBoo.texture = es.textureSimpleSetup(
         getAssetPath("boo.png"), GL_REPEAT, GL_REPEAT, GL_NEAREST, GL_NEAREST)
-    gpuBoo = es.toGPUShape(shapeBoo, GL_STATIC_DRAW, textureBoo)
 
     while not glfw.window_should_close(window):
         # Using GLFW to check for input events

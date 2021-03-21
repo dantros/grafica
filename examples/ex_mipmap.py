@@ -131,13 +131,13 @@ if __name__ == "__main__":
                 tr.translate(-0.5, 0, 0),
                 tr.scale(scale, 2*scale, 1)
                 ]))
-        pipeline.drawCall2(gpuShapeWithoutMipmap)
+        pipeline.drawCall(gpuShapeWithoutMipmap)
 
         glUniformMatrix4fv(glGetUniformLocation(pipeline.shaderProgram, "transform"), 1, GL_TRUE, tr.matmul([
                 tr.translate(0.5, 0, 0),
                 tr.scale(scale, 2*scale, 1)
                 ]))
-        pipeline.drawCall2(gpuShapeWithMipmap)
+        pipeline.drawCall(gpuShapeWithMipmap)
         
         # Once the drawing is rendered, buffers are swap so an uncomplete drawing is never seen.
         glfw.swap_buffers(window)

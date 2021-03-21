@@ -124,10 +124,10 @@ if __name__ == "__main__":
                 tr.translate(tx, ty, 0),
                 tr.scale(0.5, 0.5, 1.0),
                 reflex]))
-        pipeline.drawCall2(gpuBoo)
+        pipeline.drawCall(gpuBoo)
         
         glUniformMatrix4fv(glGetUniformLocation(pipeline.shaderProgram, "transform"), 1, GL_TRUE, questionBoxesTransform)
-        pipeline.drawCall2(gpuQuestionBoxes)
+        pipeline.drawCall(gpuQuestionBoxes)
 
         # Once the render is done, buffers are swapped, showing only the complete scene.
         glfw.swap_buffers(window)
