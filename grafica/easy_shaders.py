@@ -49,33 +49,6 @@ def textureSimpleSetup(imgName, sWrapMode, tWrapMode, minFilterMode, maxFilterMo
     return texture
 
 
-def toGPUShape(shape, usage, gpuTexture=None):
-    assert isinstance(shape, bs.Shape)
-
-    vertexData = np.array(shape.vertices, dtype=np.float32)
-    indices = np.array(shape.indices, dtype=np.uint32)
-
-    # Here the new shape will be stored
-    gpuShape = GPUShape()
-
-    gpuShape.size = len(shape.indices)
-    gpuShape.vao = glGenVertexArrays(1)
-    gpuShape.vbo = glGenBuffers(1)
-    gpuShape.ebo = glGenBuffers(1)
-
-    # Vertex data must be attached to a Vertex Buffer Object (VBO)
-    glBindBuffer(GL_ARRAY_BUFFER, gpuShape.vbo)
-    glBufferData(GL_ARRAY_BUFFER, len(vertexData) * SIZE_IN_BYTES, vertexData, usage)
-
-    # Connections among vertices are stored in the Elements Buffer Object (EBO)
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gpuShape.ebo)
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, len(indices) * SIZE_IN_BYTES, indices, usage)
-
-    gpuShape.texture = gpuTexture
-
-    return gpuShape
-
-
 class SimpleShaderProgram:
 
     def __init__(self):
