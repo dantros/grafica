@@ -8,7 +8,7 @@ import numpy as np
 __author__ = "Daniel Calderon"
 __license__ = "MIT"
 
-# We will use 32 bits data, so an integer has 4 bytes
+# We will use 32 bits data, so floats and integers have 4 bytes
 # 1 byte = 8 bits
 SIZE_IN_BYTES = 4
 

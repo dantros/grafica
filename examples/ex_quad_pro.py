@@ -1,5 +1,5 @@
 # coding=utf-8
-"""Drawing a Quad via a EBO"""
+"""Drawing a Quad via a EBO using some convenience infrastructure"""
 
 import glfw
 from OpenGL.GL import *

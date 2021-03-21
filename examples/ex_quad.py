@@ -5,12 +5,14 @@ import glfw
 from OpenGL.GL import *
 import OpenGL.GL.shaders
 import numpy as np
-import sys, os.path
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from grafica.gpu_shape import GPUShape, SIZE_IN_BYTES
 
 __author__ = "Daniel Calderon"
 __license__ = "MIT"
+
+
+# We will use 32 bits data, so floats and integers have 4 bytes
+# 1 byte = 8 bits
+SIZE_IN_BYTES = 4
 
 
 # A class to store the application control
@@ -78,10 +80,8 @@ def createShaderProgram():
 
 def createQuad(shaderProgram):
 
-    # Here the new shape will be stored
-    gpuShape = GPUShape()
-
     # Defining locations and colors for each vertex of the shape
+    #####################################
     
     vertexData = np.array([
     #   positions        colors
@@ -98,44 +98,23 @@ def createQuad(shaderProgram):
         [0, 1, 2,
          2, 3, 0], dtype= np.uint32)
 
-    gpuShape.size = len(indices)
+    size = len(indices)
 
     # VAO, VBO and EBO and  for the shape
-    gpuShape.vao = glGenVertexArrays(1)
-    gpuShape.vbo = glGenBuffers(1)
-    gpuShape.ebo = glGenBuffers(1)
+    #####################################
+    vao = glGenVertexArrays(1)
+    vbo = glGenBuffers(1)
+    ebo = glGenBuffers(1)
 
-
-    glBindBuffer(GL_ARRAY_BUFFER, gpuShape.vbo)
-    glBufferData(GL_ARRAY_BUFFER, len(vertexData) * SIZE_IN_BYTES, vertexData, GL_STATIC_DRAW)
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gpuShape.ebo)
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, len(indices) * SIZE_IN_BYTES, indices, GL_STATIC_DRAW)
-
-
-
-    # Sending data to the GPU ...
-
-    # binding the generated vao and associating the VBO and EBO to it
-    glBindVertexArray(gpuShape.vao)
-    glBindBuffer(GL_ARRAY_BUFFER, gpuShape.vbo)
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gpuShape.ebo)
+    # Binding VBO and EBO to the VAO
+    glBindVertexArray(vao)
+    glBindBuffer(GL_ARRAY_BUFFER, vbo)
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo)
     glBindVertexArray(0)
 
-    # VBO
-    # Vertex data must be attached to a Vertex Buffer Object
-    
-    #glBufferData(GL_ARRAY_BUFFER, len(vertexData) * SIZE_IN_BYTES, vertexData, GL_STATIC_DRAW)
-
-    # EBO
-    # Connections among vertices are stored in the Elements Buffer Object
-    
-    #glBufferData(GL_ELEMENT_ARRAY_BUFFER, len(indices) * SIZE_IN_BYTES, indices, GL_STATIC_DRAW)
-
-    # unbinding current vao
-
-
-    # binding the generated vao
-    glBindVertexArray(gpuShape.vao)
+    # Setting up stride in the Vertex Attribute Object (VAO)
+    #####################################
+    glBindVertexArray(vao)
 
     # Setting up the location of the attributes position and color from the VBO
     # A vertex attribute has 3 integers for the position (each is 4 bytes),
@@ -152,13 +131,14 @@ def createQuad(shaderProgram):
     # unbinding current vao
     glBindVertexArray(0)
 
+    # Sending vertices and indices to GPU memory
+    #####################################
+    glBindBuffer(GL_ARRAY_BUFFER, vbo)
+    glBufferData(GL_ARRAY_BUFFER, len(vertexData) * SIZE_IN_BYTES, vertexData, GL_STATIC_DRAW)
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo)
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, len(indices) * SIZE_IN_BYTES, indices, GL_STATIC_DRAW)
 
-    # Attempt to execute this without a vao binded
-
-
-    
-
-    return gpuShape
+    return vao, vbo, ebo, size
     
 
 if __name__ == "__main__":
@@ -186,7 +166,7 @@ if __name__ == "__main__":
     glUseProgram(shaderProgram)
 
     # Creating shapes on GPU memory
-    gpuQuad = createQuad(shaderProgram)
+    vao, vbo, ebo, size = createQuad(shaderProgram)
     
     # Setting up the clear screen color
     glClearColor(0.15, 0.15, 0.15, 1.0)
@@ -205,13 +185,15 @@ if __name__ == "__main__":
         glClear(GL_COLOR_BUFFER_BIT)
 
         # Drawing the Quad as specified in the VAO with the active shader program
-        glBindVertexArray(gpuQuad.vao)
-        glDrawElements(GL_TRIANGLES, gpuQuad.size, GL_UNSIGNED_INT, None)
+        glBindVertexArray(vao)
+        glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, None)
 
         # Once the render is done, buffers are swapped, showing only the complete scene.
         glfw.swap_buffers(window)
 
     # freeing GPU memory
-    gpuQuad.clear()
+    glDeleteBuffers(1, [ebo])
+    glDeleteBuffers(1, [vbo])
+    glDeleteVertexArrays(1, [vao])
 
     glfw.terminate()
