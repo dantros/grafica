@@ -36,7 +36,7 @@ $DESCRIPTION$
     """
 
     ExampleImageTemplateText = """
-[![./examples/$EXAMPLE_FILENAME$](screenshots/$SCREENSHOT_FILENAME$)](./examples/$EXAMPLE_FILENAME$)
+[![$EXAMPLE_FILENAME$](./screenshots/$SCREENSHOT_FILENAME$)](./examples/$EXAMPLE_FILENAME$)
     """
 
     dirPath = os.path.dirname(os.path.realpath(__file__))
