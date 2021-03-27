@@ -36,11 +36,7 @@ $DESCRIPTION$
     """
 
     ExampleImageTemplateText = """
-<p align="center">
-    <a href="https://github.com/dantros/grafica/blob/main/examples/$EXAMPLE_FILENAME$">
-    <img src="screenshots/$SCREENSHOT_FILENAME$" width="400">
-    </a>
-</p>
+[![./examples/$EXAMPLE_FILENAME$](screenshots/$SCREENSHOT_FILENAME$)](./examples/$EXAMPLE_FILENAME$)
     """
 
     dirPath = os.path.dirname(os.path.realpath(__file__))
