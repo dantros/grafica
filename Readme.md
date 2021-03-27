@@ -9,38 +9,22 @@ This set of examples illustrate different computer graphics concepts in 2D and 3
 ### ex_color_palette.py
 Simulating an indirect color scheme with matplotlib
     
-<p align="center">
-    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_color_palette.py">
-    <img src="screenshots/ex_color_palette.png" width="400">
-    </a>
-</p>
+[![ex_color_palette.py](./screenshots/ex_color_palette.png)](./examples/ex_color_palette.py)
     
 ### ex_color_palette_anim.py
 Animation changing the color palette  while simulating an indirect color scheme with matplotlib
     
-<p align="center">
-    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_color_palette_anim.py">
-    <img src="screenshots/ex_color_palette_anim.gif" width="400">
-    </a>
-</p>
+[![ex_color_palette_anim.py](./screenshots/ex_color_palette_anim.gif)](./examples/ex_color_palette_anim.py)
     
 ### ex_sira_direct.py
 Using a direct color scheme with sira
     
-<p align="center">
-    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_sira_direct.py">
-    <img src="screenshots/ex_sira_direct.png" width="400">
-    </a>
-</p>
+[![ex_sira_direct.py](./screenshots/ex_sira_direct.png)](./examples/ex_sira_direct.py)
     
 ### ex_sira_indirect.py
 Using an indirect color scheme with sira
     
-<p align="center">
-    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_sira_indirect.py">
-    <img src="screenshots/ex_sira_indirect.png" width="400">
-    </a>
-</p>
+[![ex_sira_indirect.py](./screenshots/ex_sira_indirect.png)](./examples/ex_sira_indirect.py)
     
 ## OpenGL Basics
 
@@ -52,29 +36,17 @@ It attempts to set OpenGL core profile 3.3.
 ### ex_triangle.py
 Hello OpenGL!
     
-<p align="center">
-    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_triangle.py">
-    <img src="screenshots/ex_triangle.png" width="400">
-    </a>
-</p>
+[![ex_triangle.py](./screenshots/ex_triangle.png)](./examples/ex_triangle.py)
     
 ### ex_quad.py
 Drawing a Quad via a EBO
     
-<p align="center">
-    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_quad.py">
-    <img src="screenshots/ex_quad.png" width="400">
-    </a>
-</p>
+[![ex_quad.py](./screenshots/ex_quad.png)](./examples/ex_quad.py)
     
 ### ex_cube.py
 Drawing a simple cube with OpenGL
     
-<p align="center">
-    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_cube.py">
-    <img src="screenshots/ex_cube.png" width="400">
-    </a>
-</p>
+[![ex_cube.py](./screenshots/ex_cube.png)](./examples/ex_cube.py)
     
 ## Transformations
 
@@ -82,47 +54,27 @@ Drawing a simple cube with OpenGL
 ### ex_transform_polygon.py
 Drawing and transforming polygons with matplotlib
     
-<p align="center">
-    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_transform_polygon.py">
-    <img src="screenshots/ex_transform_polygon.png" width="400">
-    </a>
-</p>
+[![ex_transform_polygon.py](./screenshots/ex_transform_polygon.png)](./examples/ex_transform_polygon.py)
     
 ### ex_cpu_transforms.py
 Transforming vertices in the CPU to create shapes.
     
-<p align="center">
-    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_cpu_transforms.py">
-    <img src="screenshots/ex_cpu_transforms.png" width="400">
-    </a>
-</p>
+[![ex_cpu_transforms.py](./screenshots/ex_cpu_transforms.png)](./examples/ex_cpu_transforms.py)
     
 ### ex_4shapes.py
 Drawing 4 shapes with different transformations
     
-<p align="center">
-    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_4shapes.py">
-    <img src="screenshots/ex_4shapes.png" width="400">
-    </a>
-</p>
+[![ex_4shapes.py](./screenshots/ex_4shapes.png)](./examples/ex_4shapes.py)
     
 ### ex_transformations_showcase.py
 Ilustrating different transformations
     
-<p align="center">
-    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_transformations_showcase.py">
-    <img src="screenshots/ex_transformations_showcase.gif" width="400">
-    </a>
-</p>
+[![ex_transformations_showcase.py](./screenshots/ex_transformations_showcase.gif)](./examples/ex_transformations_showcase.py)
     
 ### ex_quad_controlled.py
 Controlling the movement of a quad
     
-<p align="center">
-    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_quad_controlled.py">
-    <img src="screenshots/ex_quad_controlled.gif" width="400">
-    </a>
-</p>
+[![ex_quad_controlled.py](./screenshots/ex_quad_controlled.gif)](./examples/ex_quad_controlled.py)
     
 ### ex_transform_imgui.py
 Simple example using ImGui with GLFW and OpenGL
@@ -136,11 +88,7 @@ pip install imgui[glfw]
 Another example:
 https://github.com/swistakm/pyimgui/blob/master/doc/examples/integrations_glfw3.py#L2
     
-<p align="center">
-    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_transform_imgui.py">
-    <img src="screenshots/ex_transform_imgui.png" width="400">
-    </a>
-</p>
+[![ex_transform_imgui.py](./screenshots/ex_transform_imgui.png)](./examples/ex_transform_imgui.py)
     
 ### ex_mouse.py
 Interactions with keyboard and mouse via GLFW/python
@@ -151,11 +99,7 @@ https://www.glfw.org/docs/latest/input_guide.html
 How to convert GLFW/C calls to GLFW/python
 https://pypi.org/project/glfw/
     
-<p align="center">
-    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_mouse.py">
-    <img src="screenshots/ex_mouse.gif" width="400">
-    </a>
-</p>
+[![ex_mouse.py](./screenshots/ex_mouse.gif)](./examples/ex_mouse.py)
     
 ## Textures
 
@@ -163,38 +107,22 @@ https://pypi.org/project/glfw/
 ### ex_texture_boo.py
 Textures and transformations in 2D
     
-<p align="center">
-    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_texture_boo.py">
-    <img src="screenshots/ex_texture_boo.png" width="400">
-    </a>
-</p>
+[![ex_texture_boo.py](./screenshots/ex_texture_boo.png)](./examples/ex_texture_boo.py)
     
 ### ex_texture_quad.py
 Texture Quad in 2D
     
-<p align="center">
-    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_texture_quad.py">
-    <img src="screenshots/ex_texture_quad.png" width="400">
-    </a>
-</p>
+[![ex_texture_quad.py](./screenshots/ex_texture_quad.png)](./examples/ex_texture_quad.py)
     
 ### ex_mipmap.py
 Using mipmaps
     
-<p align="center">
-    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_mipmap.py">
-    <img src="screenshots/ex_mipmap.png" width="400">
-    </a>
-</p>
+[![ex_mipmap.py](./screenshots/ex_mipmap.png)](./examples/ex_mipmap.py)
     
 ### ex_text_renderer.py
 Example drawing text with OpenGL textures
     
-<p align="center">
-    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_text_renderer.py">
-    <img src="screenshots/ex_text_renderer.gif" width="400">
-    </a>
-</p>
+[![ex_text_renderer.py](./screenshots/ex_text_renderer.gif)](./examples/ex_text_renderer.py)
     
 ## Scene Graphs
 
@@ -202,20 +130,12 @@ Example drawing text with OpenGL textures
 ### ex_scene_graph_2dcars.py
 Drawing many cars in 2D using scene_graph2
     
-<p align="center">
-    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_scene_graph_2dcars.py">
-    <img src="screenshots/ex_scene_graph_2dcars.png" width="400">
-    </a>
-</p>
+[![ex_scene_graph_2dcars.py](./screenshots/ex_scene_graph_2dcars.png)](./examples/ex_scene_graph_2dcars.py)
     
 ### ex_scene_graph_snowman.py
 Drawing a Snowman using scene_graph
     
-<p align="center">
-    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_scene_graph_snowman.py">
-    <img src="screenshots/ex_scene_graph_snowman.png" width="400">
-    </a>
-</p>
+[![ex_scene_graph_snowman.py](./screenshots/ex_scene_graph_snowman.png)](./examples/ex_scene_graph_snowman.py)
     
 ## Curves
 
@@ -223,11 +143,7 @@ Drawing a Snowman using scene_graph
 ### ex_curves.py
 Hermite and Bezier curves using python, numpy and matplotlib
     
-<p align="center">
-    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_curves.py">
-    <img src="screenshots/ex_curves.png" width="400">
-    </a>
-</p>
+[![ex_curves.py](./screenshots/ex_curves.png)](./examples/ex_curves.py)
     
 ## 3D World
 
@@ -235,38 +151,22 @@ Hermite and Bezier curves using python, numpy and matplotlib
 ### ex_projections.py
 Projections example
     
-<p align="center">
-    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_projections.py">
-    <img src="screenshots/ex_projections.gif" width="400">
-    </a>
-</p>
+[![ex_projections.py](./screenshots/ex_projections.gif)](./examples/ex_projections.py)
     
 ### ex_texture_dice.py
 Textures and transformations in 3D
     
-<p align="center">
-    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_texture_dice.py">
-    <img src="screenshots/ex_texture_dice.png" width="400">
-    </a>
-</p>
+[![ex_texture_dice.py](./screenshots/ex_texture_dice.png)](./examples/ex_texture_dice.py)
     
 ### ex_height_plotter.py
 plotting a 2d function as a surface
     
-<p align="center">
-    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_height_plotter.py">
-    <img src="screenshots/ex_height_plotter.png" width="400">
-    </a>
-</p>
+[![ex_height_plotter.py](./screenshots/ex_height_plotter.png)](./examples/ex_height_plotter.py)
     
 ### ex_scene_graph_3dcars.py
 Drawing 3D cars via scene graph
     
-<p align="center">
-    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_scene_graph_3dcars.py">
-    <img src="screenshots/ex_scene_graph_3dcars.png" width="400">
-    </a>
-</p>
+[![ex_scene_graph_3dcars.py](./screenshots/ex_scene_graph_3dcars.png)](./examples/ex_scene_graph_3dcars.py)
     
 ### ex_mix2d3d.py
 Example drawing 2D over a 3D world.
@@ -275,20 +175,12 @@ The trick is to not clear the color buffer after drawing 3D, and then draw 2D wi
 If it is required to draw 3D over 2D, you may need to clear the depth buffer with
 glClear(GL_DEPTH_BUFFER_BIT)
     
-<p align="center">
-    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_mix2d3d.py">
-    <img src="screenshots/ex_mix2d3d.png" width="400">
-    </a>
-</p>
+[![ex_mix2d3d.py](./screenshots/ex_mix2d3d.png)](./examples/ex_mix2d3d.py)
     
 ### ex_surface.py
 Bezier Surface using python, numpy and matplotlib
     
-<p align="center">
-    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_surface.py">
-    <img src="screenshots/ex_surface.png" width="400">
-    </a>
-</p>
+[![ex_surface.py](./screenshots/ex_surface.png)](./examples/ex_surface.py)
     
 ## Shading and Lighting
 
@@ -296,29 +188,17 @@ Bezier Surface using python, numpy and matplotlib
 ### ex_lighting.py
 Showing lighting effects: Flat, Gauraud and Phong
     
-<p align="center">
-    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_lighting.py">
-    <img src="screenshots/ex_lighting.gif" width="400">
-    </a>
-</p>
+[![ex_lighting.py](./screenshots/ex_lighting.gif)](./examples/ex_lighting.py)
     
 ### ex_lighting_texture2.py
 Showing lighting effects over two textured objects: Flat, Gauraud and Phong
     
-<p align="center">
-    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_lighting_texture2.py">
-    <img src="screenshots/ex_lighting_texture2.png" width="400">
-    </a>
-</p>
+[![ex_lighting_texture2.py](./screenshots/ex_lighting_texture2.png)](./examples/ex_lighting_texture2.py)
     
 ### ex_obj_reader.py
 Rendering a OBJ file simplified
     
-<p align="center">
-    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_obj_reader.py">
-    <img src="screenshots/ex_obj_reader.png" width="400">
-    </a>
-</p>
+[![ex_obj_reader.py](./screenshots/ex_obj_reader.png)](./examples/ex_obj_reader.py)
     
 ## Meshes
 
@@ -329,11 +209,7 @@ Using Delaunay triangluation from the scipy library
 documentation:
 https://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.spatial.Delaunay.html
     
-<p align="center">
-    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_delaunay.py">
-    <img src="screenshots/ex_delaunay.png" width="400">
-    </a>
-</p>
+[![ex_delaunay.py](./screenshots/ex_delaunay.png)](./examples/ex_delaunay.py)
     
 ### ex_triangle_mesh.py
 Face based data structure for a triangle mesh
