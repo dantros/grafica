@@ -5,14 +5,12 @@ import glfw
 from OpenGL.GL import *
 import OpenGL.GL.shaders
 import numpy as np
-import sys, os.path
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from grafica.gpu_shape import GPUShape
 
 __author__ = "Daniel Calderon"
 __license__ = "MIT"
 
-# We will use 32 bits data, so an integer has 4 bytes
+
+# We will use 32 bits data, so floats and integers have 4 bytes
 # 1 byte = 8 bits
 SIZE_IN_BYTES = 4
 
@@ -43,89 +41,8 @@ def on_key(window, key, scancode, action, mods):
         print('Unknown key')
 
 
-def drawCall(shaderProgram, shape):
-
-    # Binding the proper buffers
-    glBindVertexArray(shape.vao)
-    glBindBuffer(GL_ARRAY_BUFFER, shape.vbo)
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, shape.ebo)
-
-    # Setting up the location of the attributes position and color from the VBO
-    # A vertex attribute has 3 integers for the position (each is 4 bytes),
-    # and 3 numbers to represent the color (each is 4 bytes),
-    # Henceforth, we have 3*4 + 3*4 = 24 bytes
-    position = glGetAttribLocation(shaderProgram, "position")
-    glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, 24, ctypes.c_void_p(0))
-    glEnableVertexAttribArray(position)
+def createShaderProgram():
     
-    color = glGetAttribLocation(shaderProgram, "color")
-    glVertexAttribPointer(color, 3, GL_FLOAT, GL_FALSE, 24, ctypes.c_void_p(12))
-    glEnableVertexAttribArray(color)
-
-    # Render the active element buffer with the active shader program
-    glDrawElements(GL_TRIANGLES, shape.size, GL_UNSIGNED_INT, None)
-
-
-def createQuad():
-
-    # Here the new shape will be stored
-    gpuShape = GPUShape()
-
-    # Defining locations and colors for each vertex of the shape
-    
-    vertexData = np.array([
-    #   positions        colors
-        -0.5, -0.5, 0.0,  1.0, 0.0, 0.0,
-         0.5, -0.5, 0.0,  0.0, 1.0, 0.0,
-         0.5,  0.5, 0.0,  0.0, 0.0, 1.0,
-        -0.5,  0.5, 0.0,  1.0, 1.0, 1.0
-    # It is important to use 32 bits data
-        ], dtype = np.float32)
-
-    # Defining connections among vertices
-    # We have a triangle every 3 indices specified
-    indices = np.array(
-        [0, 1, 2,
-         2, 3, 0], dtype= np.uint32)
-
-    gpuShape.size = len(indices)
-
-    # VAO, VBO and EBO and  for the shape
-    gpuShape.vao = glGenVertexArrays(1)
-    gpuShape.vbo = glGenBuffers(1)
-    gpuShape.ebo = glGenBuffers(1)
-
-    # Vertex data must be attached to a Vertex Buffer Object (VBO)
-    glBindBuffer(GL_ARRAY_BUFFER, gpuShape.vbo)
-    glBufferData(GL_ARRAY_BUFFER, len(vertexData) * SIZE_IN_BYTES, vertexData, GL_STATIC_DRAW)
-
-    # Connections among vertices are stored in the Elements Buffer Object (EBO)
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gpuShape.ebo)
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, len(indices) * SIZE_IN_BYTES, indices, GL_STATIC_DRAW)
-
-    return gpuShape
-
-
-if __name__ == "__main__":
-
-    # Initialize glfw
-    if not glfw.init():
-        glfw.set_window_should_close(window, True)
-
-    width = 600
-    height = 600
-
-    window = glfw.create_window(width, height, "Drawing a quad via a EBO", None, None)
-
-    if not window:
-        glfw.terminate()
-        glfw.set_window_should_close(window, True)
-
-    glfw.make_context_current(window)
-
-    # Connecting the callback function 'on_key' to handle keyboard events
-    glfw.set_key_callback(window, on_key)
-
     # Defining shaders for our pipeline
     vertex_shader = """
     #version 130
@@ -157,15 +74,102 @@ if __name__ == "__main__":
     shaderProgram = OpenGL.GL.shaders.compileProgram(
         OpenGL.GL.shaders.compileShader(vertex_shader, GL_VERTEX_SHADER),
         OpenGL.GL.shaders.compileShader(fragment_shader, GL_FRAGMENT_SHADER))
+
+    return shaderProgram
+
+
+def createQuad(shaderProgram):
+
+    # Defining locations and colors for each vertex of the shape
+    #####################################
     
-    # Telling OpenGL to use our shader program
+    vertexData = np.array([
+    #   positions        colors
+        -0.5, -0.5, 0.0,  1.0, 0.0, 0.0,
+         0.5, -0.5, 0.0,  0.0, 1.0, 0.0,
+         0.5,  0.5, 0.0,  0.0, 0.0, 1.0,
+        -0.5,  0.5, 0.0,  1.0, 1.0, 1.0
+    # It is important to use 32 bits data
+        ], dtype = np.float32)
+
+    # Defining connections among vertices
+    # We have a triangle every 3 indices specified
+    indices = np.array(
+        [0, 1, 2,
+         2, 3, 0], dtype= np.uint32)
+
+    size = len(indices)
+
+    # VAO, VBO and EBO and  for the shape
+    #####################################
+    vao = glGenVertexArrays(1)
+    vbo = glGenBuffers(1)
+    ebo = glGenBuffers(1)
+
+    # Binding VBO and EBO to the VAO
+    glBindVertexArray(vao)
+    glBindBuffer(GL_ARRAY_BUFFER, vbo)
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo)
+    glBindVertexArray(0)
+
+    # Setting up stride in the Vertex Attribute Object (VAO)
+    #####################################
+    glBindVertexArray(vao)
+
+    # Setting up the location of the attributes position and color from the VBO
+    # A vertex attribute has 3 integers for the position (each is 4 bytes),
+    # and 3 numbers to represent the color (each is 4 bytes),
+    # Henceforth, we have 3*4 + 3*4 = 24 bytes
+    position = glGetAttribLocation(shaderProgram, "position")
+    glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, 6 * SIZE_IN_BYTES, ctypes.c_void_p(0))
+    glEnableVertexAttribArray(position)
+    
+    color = glGetAttribLocation(shaderProgram, "color")
+    glVertexAttribPointer(color, 3, GL_FLOAT, GL_FALSE, 6 * SIZE_IN_BYTES, ctypes.c_void_p(3 * SIZE_IN_BYTES))
+    glEnableVertexAttribArray(color)
+
+    # unbinding current vao
+    glBindVertexArray(0)
+
+    # Sending vertices and indices to GPU memory
+    #####################################
+    glBindBuffer(GL_ARRAY_BUFFER, vbo)
+    glBufferData(GL_ARRAY_BUFFER, len(vertexData) * SIZE_IN_BYTES, vertexData, GL_STATIC_DRAW)
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo)
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, len(indices) * SIZE_IN_BYTES, indices, GL_STATIC_DRAW)
+
+    return vao, vbo, ebo, size
+    
+
+if __name__ == "__main__":
+
+    # Initialize glfw
+    if not glfw.init():
+        glfw.set_window_should_close(window, True)
+
+    width = 600
+    height = 600
+
+    window = glfw.create_window(width, height, "Drawing a quad via a EBO", None, None)
+
+    if not window:
+        glfw.terminate()
+        glfw.set_window_should_close(window, True)
+
+    glfw.make_context_current(window)
+
+    # Connecting the callback function 'on_key' to handle keyboard events
+    glfw.set_key_callback(window, on_key)
+    
+    # Creating our shader program and telling OpenGL to use it
+    shaderProgram = createShaderProgram()
     glUseProgram(shaderProgram)
 
+    # Creating shapes on GPU memory
+    vao, vbo, ebo, size = createQuad(shaderProgram)
+    
     # Setting up the clear screen color
     glClearColor(0.15, 0.15, 0.15, 1.0)
-
-    # Creating shapes on GPU memory
-    gpuQuad = createQuad()
 
     while not glfw.window_should_close(window):
         # Using GLFW to check for input events
@@ -180,13 +184,16 @@ if __name__ == "__main__":
         # Clearing the screen in both, color and depth
         glClear(GL_COLOR_BUFFER_BIT)
 
-        # Drawing the Quad
-        drawCall(shaderProgram, gpuQuad)
+        # Drawing the Quad as specified in the VAO with the active shader program
+        glBindVertexArray(vao)
+        glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, None)
 
         # Once the render is done, buffers are swapped, showing only the complete scene.
         glfw.swap_buffers(window)
 
     # freeing GPU memory
-    gpuQuad.clear()
+    glDeleteBuffers(1, [ebo])
+    glDeleteBuffers(1, [vbo])
+    glDeleteVertexArrays(1, [vao])
 
     glfw.terminate()

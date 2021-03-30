@@ -75,9 +75,11 @@ if __name__ == "__main__":
 
     # Creating shapes on GPU memory
     shape = bs.createTextureQuad(2, 2)
-    texture = es.textureSimpleSetup(
+    gpuShape = es.GPUShape().initBuffers()
+    pipeline.setupVAO(gpuShape)
+    gpuShape.fillBuffers(shape.vertices, shape.indices, GL_STATIC_DRAW)
+    gpuShape.texture = es.textureSimpleSetup(
         getAssetPath("bricks.jpg"), GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, GL_LINEAR, GL_LINEAR)
-    gpuShape = es.toGPUShape(shape, GL_STATIC_DRAW, texture)
 
     while not glfw.window_should_close(window):
         # Using GLFW to check for input events

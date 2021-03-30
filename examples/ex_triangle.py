@@ -94,7 +94,7 @@ if __name__ == "__main__":
 
     glClear(GL_COLOR_BUFFER_BIT)
 
-    # It renders a scene using the active shader program (pipeline) and the active VBA (shapes)
+    # It renders a scene using the active shader program (pipeline) and the active VAO (shapes)
     glDrawArrays(GL_TRIANGLES, 0, 3)
 
     # Moving our draw to the active color buffer

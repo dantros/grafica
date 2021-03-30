@@ -2,6 +2,7 @@
 """Showing lighting effects over two textured objects: Flat, Gauraud and Phong"""
 
 import glfw
+import copy
 from OpenGL.GL import *
 import OpenGL.GL.shaders
 import numpy as np
@@ -150,17 +151,35 @@ if __name__ == "__main__":
     # and which one is at the back
     glEnable(GL_DEPTH_TEST)
 
+    # Convenience function to ease initialization
+    def createGPUShape(pipeline, shape):
+        gpuShape = es.GPUShape().initBuffers()
+        pipeline.setupVAO(gpuShape)
+        gpuShape.fillBuffers(shape.vertices, shape.indices, GL_STATIC_DRAW)
+        return gpuShape
+
     # Creating shapes on GPU memory
-    gpuAxis = es.toGPUShape(bs.createAxis(4), GL_STATIC_DRAW)
+    gpuAxis = createGPUShape(colorPipeline, bs.createAxis(4))
 
+    # Note: the vertex attribute layout (stride) is the same for the 3 lighting pipelines in
+    # this case: flatPipeline, gouraudPipeline and phongPipeline. Hence, the VAO setup can
+    # be the same.
     shapeDice = createDice()
-    textureDice = es.textureSimpleSetup(
+    gpuDice = createGPUShape(textureGouraudPipeline, shapeDice)
+    gpuDice.texture = es.textureSimpleSetup(
         getAssetPath("dice.jpg"), GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR)
-    gpuDice = es.toGPUShape(shapeDice, GL_STATIC_DRAW, textureDice)
 
-    textureDiceBlue = es.textureSimpleSetup(
+    # Since the only difference between both dices is the texture, we can just use the same
+    # GPU data, but with another texture.
+    # copy.deepcopy generate a true copy, so if we change gpuDiceBlue.texture (or any other
+    # member), we will not change gpuDice.texture
+    gpuDiceBlue = copy.deepcopy(gpuDice)
+    gpuDiceBlue.texture = es.textureSimpleSetup(
         getAssetPath("dice_blue.jpg"), GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR)
-    gpuDiceBlue = es.toGPUShape(shapeDice, GL_STATIC_DRAW, textureDiceBlue)
+
+    print("Here we can verify that we are using the same GPU buffers, but with a different texture")
+    print("Dice      : ", gpuDice)
+    print("Blue Dice : ", gpuDiceBlue)
 
     t0 = glfw.get_time()
     camera_theta = np.pi/4

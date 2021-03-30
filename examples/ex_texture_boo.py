@@ -5,9 +5,9 @@ import glfw
 from OpenGL.GL import *
 import OpenGL.GL.shaders
 import numpy as np
-import sys
-import os.path
+import sys, os.path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from grafica.gpu_shape import GPUShape, SIZE_IN_BYTES
 import grafica.transformations as tr
 import grafica.basic_shapes as bs
 import grafica.easy_shaders as es
@@ -79,16 +79,21 @@ if __name__ == "__main__":
 
     # Creating shapes on GPU memory
     shapeBoo = bs.createTextureQuad(1,1)
-    textureBoo = es.textureSimpleSetup(
+    gpuBoo = GPUShape().initBuffers()
+    pipeline.setupVAO(gpuBoo)
+    gpuBoo.fillBuffers(shapeBoo.vertices, shapeBoo.indices, GL_STATIC_DRAW)
+    gpuBoo.texture = es.textureSimpleSetup(
         getAssetPath("boo.png"), GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, GL_NEAREST, GL_NEAREST)
-    gpuBoo = es.toGPUShape(shapeBoo, GL_STATIC_DRAW, textureBoo)
 
     shapeQuestionBoxes = bs.createTextureQuad(10,1)
-    textureQuestionBoxes = es.textureSimpleSetup(
+    gpuQuestionBoxes = GPUShape().initBuffers()
+    pipeline.setupVAO(gpuQuestionBoxes)
+    gpuQuestionBoxes.fillBuffers(shapeQuestionBoxes.vertices, shapeQuestionBoxes.indices, GL_STATIC_DRAW)
+    gpuQuestionBoxes.texture = es.textureSimpleSetup(
         getAssetPath("cg_box.png"), GL_REPEAT, GL_REPEAT, GL_NEAREST, GL_NEAREST)
-    gpuQuestionBoxes = es.toGPUShape(shapeQuestionBoxes, GL_STATIC_DRAW, textureQuestionBoxes)
-
+    
     questionBoxesTransform = np.matmul(tr.translate(0, -0.8, 0), tr.scale(2, 0.2, 1))
+    
 
     while not glfw.window_should_close(window):
         # Using GLFW to check for input events
@@ -128,6 +133,6 @@ if __name__ == "__main__":
 
     # freeing GPU memory
     gpuBoo.clear()
-    gpuQuestionBoxes.clear()
+    #gpuQuestionBoxes.clear()
 
     glfw.terminate()

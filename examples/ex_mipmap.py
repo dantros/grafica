@@ -67,15 +67,33 @@ if __name__ == "__main__":
     # Setting up the clear screen color
     glClearColor(0.25, 0.25, 0.25, 1.0)
 
-    # Creating shapes on GPU memory
+    # Shape on CPU memory
     shapeTextureQuad = bs.createTextureQuad(1, 1)
-    textureWithoutMipmap = es.textureSimpleSetup(getAssetPath("red_woodpecker.jpg"), GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, GL_LINEAR, GL_LINEAR)
-    gpuShapeWithoutMipmap = es.toGPUShape(shapeTextureQuad, GL_STATIC_DRAW, textureWithoutMipmap)
-
+    
+    # Shapes on GPU memory
+    gpuShapeWithoutMipmap = es.GPUShape().initBuffers()
+    pipeline.setupVAO(gpuShapeWithoutMipmap)
+    gpuShapeWithoutMipmap.fillBuffers(shapeTextureQuad.vertices, shapeTextureQuad.indices, GL_STATIC_DRAW)
+    gpuShapeWithoutMipmap.texture = es.textureSimpleSetup(getAssetPath("red_woodpecker.jpg"), GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, GL_LINEAR, GL_LINEAR)
+    
+    # Since we want to draw the same shape, but with mipmaps in its texture, there is no need to duplicate
+    # the information in the GPU, we can just use the same buffers...
+    gpuShapeWithMipmap = es.GPUShape()
+    gpuShapeWithMipmap.vao = gpuShapeWithoutMipmap.vao
+    gpuShapeWithMipmap.vbo = gpuShapeWithoutMipmap.vbo
+    gpuShapeWithMipmap.ebo = gpuShapeWithoutMipmap.ebo
+    gpuShapeWithMipmap.size = gpuShapeWithoutMipmap.size
+    
+    # ... but with a different texture
     textureWithMipmap = es.textureSimpleSetup(getAssetPath("red_woodpecker.jpg"), GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, GL_LINEAR_MIPMAP_NEAREST, GL_LINEAR)
     glGenerateMipmap(GL_TEXTURE_2D)  # <---- Here we generate mipmaps for the binded texture.
-    gpuShapeWithMipmap = es.toGPUShape(shapeTextureQuad, GL_STATIC_DRAW, textureWithMipmap)
-        	
+
+    gpuShapeWithMipmap.texture = textureWithMipmap
+
+    print("Here we can verify that we are using the same GPU buffers, but with a different texture")
+    print("Shape without mipmaps : ", gpuShapeWithoutMipmap)
+    print("Shape with mipmaps    : ", gpuShapeWithMipmap)
+       
     t0 = glfw.get_time()
     scale = 1.0
 
@@ -120,12 +138,12 @@ if __name__ == "__main__":
                 tr.scale(scale, 2*scale, 1)
                 ]))
         pipeline.drawCall(gpuShapeWithMipmap)
-
+        
         # Once the drawing is rendered, buffers are swap so an uncomplete drawing is never seen.
         glfw.swap_buffers(window)
 
     # freeing GPU memory
     gpuShapeWithoutMipmap.clear()
-    gpuShapeWithMipmap.clear()
+    #gpuShapeWithMipmap.clear()
     
     glfw.terminate()

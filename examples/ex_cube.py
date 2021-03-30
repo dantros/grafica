@@ -7,16 +7,13 @@ import OpenGL.GL.shaders
 import numpy as np
 import sys, os.path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import grafica.gpu_shape as gs
+import grafica.basic_shapes as bs
+import grafica.easy_shaders as es
 import grafica.transformations as tr
 
 __author__ = "Daniel Calderon"
 __license__ = "MIT"
 
-
-# We will use 32 bits data, so an integer has 4 bytes
-# 1 byte = 8 bits
-SIZE_IN_BYTES = 4
 
 # A class to store the application control
 class Controller:
@@ -25,6 +22,7 @@ class Controller:
 
 # we will use the global controller as communication with the callback function
 controller = Controller()
+
 
 def on_key(window, key, scancode, action, mods):
 
@@ -41,80 +39,6 @@ def on_key(window, key, scancode, action, mods):
 
     else:
         print('Unknown key')
-
-
-def drawCall(shaderProgram, shape, transform):
-
-    # Binding the proper buffers
-    glBindVertexArray(shape.vao)
-    glBindBuffer(GL_ARRAY_BUFFER, shape.vbo)
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, shape.ebo)
-
-    # Setting up the location of the attributes position and color from the VBO
-    # A vertex attribute has 3 integers for the position (each is 4 bytes),
-    # and 3 numbers to represent the color (each is 4 bytes),
-    # Henceforth, we have 3*4 + 3*4 = 24 bytes
-    position = glGetAttribLocation(shaderProgram, "position")
-    glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, 24, ctypes.c_void_p(0))
-    glEnableVertexAttribArray(position)
-    
-    color = glGetAttribLocation(shaderProgram, "color")
-    glVertexAttribPointer(color, 3, GL_FLOAT, GL_FALSE, 24, ctypes.c_void_p(12))
-    glEnableVertexAttribArray(color)
-
-    # Sending the transform matrix to the GPU
-    transformLoc = glGetUniformLocation(shaderProgram, "transform")
-    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, transform)
-
-    # Render the active element buffer with the active shader program
-    glDrawElements(GL_TRIANGLES, shape.size, GL_UNSIGNED_INT, None)
-
-
-def createCube():
-
-    # Here the new shape will be stored
-    gpuShape = gs.GPUShape()
-
-    # Defining the location and colors of each vertex  of the shape
-    vertexData = np.array(
-    #    positions        colors
-       [-0.5, -0.5,  0.5, 1.0, 0.0, 0.0,
-         0.5, -0.5,  0.5, 0.0, 1.0, 0.0,
-         0.5,  0.5,  0.5, 0.0, 0.0, 1.0,
-        -0.5,  0.5,  0.5, 1.0, 1.0, 1.0,
-
-        -0.5, -0.5, -0.5, 1.0, 1.0, 0.0,
-         0.5, -0.5, -0.5, 0.0, 1.0, 1.0,
-         0.5,  0.5, -0.5, 1.0, 0.0, 1.0,
-        -0.5,  0.5, -0.5, 1.0, 1.0, 1.0],
-        dtype = np.float32) # We must use 32 bits data
-
-    # Defining connections among vertices
-    # We have a triangle every 3 indices specified
-    indices = np.array(
-        [0, 1, 2, 2, 3, 0,
-         4, 5, 6, 6, 7, 4,
-         4, 5, 1, 1, 0, 4,
-         6, 7, 3, 3, 2, 6,
-         5, 6, 2, 2, 1, 5,
-         7, 4, 0, 0, 3, 7], dtype= np.uint32)
-
-    gpuShape.size = len(indices)
-
-    # VAO, VBO and EBO and  for the shape
-    gpuShape.vao = glGenVertexArrays(1)
-    gpuShape.vbo = glGenBuffers(1)
-    gpuShape.ebo = glGenBuffers(1)
-
-    # Vertex data must be attached to a Vertex Buffer Object (VBO)
-    glBindBuffer(GL_ARRAY_BUFFER, gpuShape.vbo)
-    glBufferData(GL_ARRAY_BUFFER, len(vertexData) * SIZE_IN_BYTES, vertexData, GL_STATIC_DRAW)
-
-    # Connections among vertices are stored in the Elements Buffer Object (EBO)
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gpuShape.ebo)
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, len(indices) * SIZE_IN_BYTES, indices, GL_STATIC_DRAW)
-
-    return gpuShape
 
 
 if __name__ == "__main__":
@@ -137,41 +61,9 @@ if __name__ == "__main__":
     # Connecting the callback function 'on_key' to handle keyboard events
     glfw.set_key_callback(window, on_key)
 
-    # Defining shaders for our pipeline
-    vertex_shader = """
-    #version 130
-    
-    uniform mat4 transform;
-
-    in vec3 position;
-    in vec3 color;
-
-    out vec3 newColor;
-    void main()
-    {
-        gl_Position = transform * vec4(position, 1.0f);
-        newColor = color;
-    }
-    """
-
-    fragment_shader = """
-    #version 130
-    in vec3 newColor;
-
-    out vec4 outColor;
-    void main()
-    {
-        outColor = vec4(newColor, 1.0f);
-    }
-    """
-
-    # Assembling the shader program (pipeline) with both shaders
-    shaderProgram = OpenGL.GL.shaders.compileProgram(
-        OpenGL.GL.shaders.compileShader(vertex_shader, GL_VERTEX_SHADER),
-        OpenGL.GL.shaders.compileShader(fragment_shader, GL_FRAGMENT_SHADER))
-
-    # Telling OpenGL to use our shader program
-    glUseProgram(shaderProgram)
+    # Creating our shader program and telling OpenGL to use it
+    pipeline = es.SimpleTransformShaderProgram()
+    glUseProgram(pipeline.shaderProgram)
 
     # Setting up the clear screen color
     glClearColor(0.15, 0.15, 0.15, 1.0)
@@ -181,7 +73,11 @@ if __name__ == "__main__":
     glEnable(GL_DEPTH_TEST)
 
     # Creating shapes on GPU memory
-    gpuCube = createCube()
+    shapeCube = bs.createRainbowCube()
+    gpuCube = es.GPUShape().initBuffers()
+    pipeline.setupVAO(gpuCube)
+    gpuCube.fillBuffers(shapeCube.vertices, shapeCube.indices, GL_STATIC_DRAW)
+
 
     while not glfw.window_should_close(window):
         # Using GLFW to check for input events
@@ -202,7 +98,8 @@ if __name__ == "__main__":
         transform = np.matmul(Rx, Ry)
 
         # Drawing the Cube
-        drawCall(shaderProgram, gpuCube, transform)
+        glUniformMatrix4fv(glGetUniformLocation(pipeline.shaderProgram, "transform"), 1, GL_TRUE, transform)
+        pipeline.drawCall(gpuCube)
 
         # Once the drawing is rendered, buffers are swap so an uncomplete drawing is never seen.
         glfw.swap_buffers(window)
