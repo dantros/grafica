@@ -109,7 +109,7 @@ class TextureTextRendererShaderProgram:
     def __init__(self):
 
         vertex_shader = """
-            #version 130
+            #version 330
 
             uniform mat4 transform;
 
@@ -126,7 +126,7 @@ class TextureTextRendererShaderProgram:
             """
 
         fragment_shader = """
-            #version 130
+            #version 330
 
             in vec3 outTexCoords;
 

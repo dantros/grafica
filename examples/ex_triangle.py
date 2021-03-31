@@ -41,7 +41,7 @@ if __name__ == "__main__":
 
     # Defining shaders for our pipeline
     vertex_shader = """
-    #version 130
+    #version 330
     in vec3 position;
     in vec3 color;
 
@@ -54,7 +54,7 @@ if __name__ == "__main__":
     """
 
     fragment_shader = """
-    #version 130
+    #version 330
     in vec3 newColor;
 
     out vec4 outColor;
@@ -64,6 +64,10 @@ if __name__ == "__main__":
     }
     """
 
+    # Binding artificial vertex array object for validation
+    VAO = glGenVertexArrays(1)
+    glBindVertexArray(VAO)
+    
     # Assembling the shader program (pipeline) with both shaders
     shaderProgram = OpenGL.GL.shaders.compileProgram(
         OpenGL.GL.shaders.compileShader(vertex_shader, GL_VERTEX_SHADER),

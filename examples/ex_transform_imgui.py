@@ -99,7 +99,7 @@ class ModulationTransformShaderProgram:
     def __init__(self):
 
         vertex_shader = """
-            #version 130
+            #version 330
             
             uniform mat4 transform;
 
@@ -116,7 +116,7 @@ class ModulationTransformShaderProgram:
             """
 
         fragment_shader = """
-            #version 130
+            #version 330
 
             in vec3 newColor;
             out vec4 outColor;
@@ -181,6 +181,10 @@ if __name__ == "__main__":
 
     glfw.make_context_current(window)
 
+    # Binding artificial vertex array object for validation
+    VAO = glGenVertexArrays(1)
+    glBindVertexArray(VAO)
+    
     # Creating our shader program and telling OpenGL to use it
     pipeline = ModulationTransformShaderProgram()
     glUseProgram(pipeline.shaderProgram)

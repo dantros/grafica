@@ -39,7 +39,7 @@ class SimpleShaderProgram:
     def __init__(self):
 
         vertex_shader = """
-            #version 130
+            #version 330
 
             in vec3 position;
             in vec3 color;
@@ -53,7 +53,7 @@ class SimpleShaderProgram:
             """
 
         fragment_shader = """
-            #version 130
+            #version 330
             in vec3 newColor;
 
             out vec4 outColor;
@@ -95,7 +95,7 @@ class SimpleTextureShaderProgram:
     def __init__(self):
 
         vertex_shader = """
-            #version 130
+            #version 330
 
             in vec3 position;
             in vec2 texCoords;
@@ -110,7 +110,7 @@ class SimpleTextureShaderProgram:
             """
 
         fragment_shader = """
-            #version 130
+            #version 330
 
             in vec2 outTexCoords;
 
@@ -267,6 +267,10 @@ class DirectRGBRasterDisplay:
         glfw.make_context_current(self.window)
         glfw.set_key_callback(self.window, self.on_key)
         
+        # Binding artificial vertex array object for validation
+        VAO = glGenVertexArrays(1)
+        glBindVertexArray(VAO)
+    
         self.pipeline = SimpleTextureShaderProgram()
         
         self.colorPipeline = SimpleShaderProgram()
