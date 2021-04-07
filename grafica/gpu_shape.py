@@ -27,7 +27,7 @@ class GPUShape:
         It returns itself to enable the convenience call:
         gpuShape = GPUShape().initBuffers()
 
-        Note: this is not the default constructure as you may want
+        Note: this is not the default constructor as you may want
         to use some already existing buffers.
         """
         self.vao = glGenVertexArrays(1)
