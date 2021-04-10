@@ -155,8 +155,8 @@ if __name__ == "__main__":
         timeShape = tx.textToShape(timeStr, timeCharSize, timeCharSize)
 
         # Updating GPU memory...
-        gpuDate.fillBuffers(dateShape.vertices, dateShape.indices, GL_DYNAMIC_DRAW)
-        gpuTime.fillBuffers(timeShape.vertices, timeShape.indices, GL_DYNAMIC_DRAW)
+        gpuDate.fillBuffers(dateShape.vertices, dateShape.indices, GL_STREAM_DRAW)
+        gpuTime.fillBuffers(timeShape.vertices, timeShape.indices, GL_STREAM_DRAW)
 
         if now.second != second:
             second = now.second
