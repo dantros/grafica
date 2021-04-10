@@ -1,6 +1,6 @@
 
 # coding=utf-8
-"""vertices and indices for a variety of simple shapes"""
+"""Vertices and indices for a variety of simple shapes"""
 
 import math
 
