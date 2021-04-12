@@ -113,6 +113,10 @@ if __name__ == "__main__":
     glfw.set_mouse_button_callback(window, mouse_button_callback)
     glfw.set_scroll_callback(window, scroll_callback)
 
+    # Binding artificial vertex array object for validation
+    VAO = glGenVertexArrays(1)
+    glBindVertexArray(VAO)
+    
     # Creating our shader program and telling OpenGL to use it
     pipeline = es.SimpleTransformShaderProgram()
     glUseProgram(pipeline.shaderProgram)

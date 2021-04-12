@@ -117,6 +117,10 @@ if __name__ == "__main__":
     # Connecting the callback function 'on_key' to handle keyboard events
     glfw.set_key_callback(window, on_key)
 
+    # Binding artificial vertex array object for validation
+    VAO = glGenVertexArrays(1)
+    glBindVertexArray(VAO)
+    
     # Assembling the shader program (pipeline) with both shaders
     pipeline = es.SimpleTransformShaderProgram()
     

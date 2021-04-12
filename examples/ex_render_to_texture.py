@@ -72,6 +72,10 @@ if __name__ == "__main__":
     # Framebuffer configuration
     #######################
     
+    # Binding artificial vertex array object for validation
+    VAO = glGenVertexArrays(1)
+    glBindVertexArray(VAO)
+    
     # Generating a new freamebuffer and binding it
     framebuffer = glGenFramebuffers(1)
     glBindFramebuffer(GL_FRAMEBUFFER, framebuffer)

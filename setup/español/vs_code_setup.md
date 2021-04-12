@@ -32,7 +32,7 @@ Si realizo la instalacion de librerias con python nativo (No recomendado) el int
 3. Seleccione el intérprete del environment que creó con Anaconda
 4. Presione el símbolo verde para ejecutar el código con el ambiente
 
-![Interprete](./captures/captura13.jpg)
+![Interprete](./captures/vscode_run.jpg)
 
 Se verá la ejecución del código, en este caso de ``ex_quad.py``
 
