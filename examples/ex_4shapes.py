@@ -25,7 +25,7 @@ SIZE_IN_BYTES = 4
 # A class to store the application control
 class Controller:
     def __init__(self):
-        fillPolygon = True
+        self.fillPolygon = True
 
 
 # we will use the global controller as communication with the callback function
