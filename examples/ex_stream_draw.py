@@ -1,5 +1,5 @@
 # coding=utf-8
-"""Drawing a deformable shape using GL_STREAM_DATA"""
+"""Drawing a deformable shape using GL_STREAM_DRAW"""
 
 import glfw
 from OpenGL.GL import *

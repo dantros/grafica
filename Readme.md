@@ -49,7 +49,7 @@ Drawing a simple cube with OpenGL
 [![ex_cube.py](./screenshots/ex_cube.png)](./examples/ex_cube.py)
     
 ### ex_stream_draw.py
-Drawing a deformable shape using GL_STREAM_DATA
+Drawing a deformable shape using GL_STREAM_DRAW
     
 [![ex_stream_draw.py](./screenshots/ex_stream_draw.gif)](./examples/ex_stream_draw.py)
     
