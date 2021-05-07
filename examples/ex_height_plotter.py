@@ -130,8 +130,8 @@ if __name__ == "__main__":
     simpleParaboloid = lambda x, y: paraboloid(x, y, 3.0, 3.0)
 
     # generate a numpy array with 40 samples between -10 and 10
-    xs = np.ogrid[-10:10:500j]
-    ys = np.ogrid[-10:10:500j]
+    xs = np.ogrid[-10:10:20j]
+    ys = np.ogrid[-10:10:20j]
     cpuSurface = generateMesh(xs, ys, simpleParaboloid, [1,0,0])
     gpuSurface = es.GPUShape().initBuffers()
     pipeline.setupVAO(gpuSurface)

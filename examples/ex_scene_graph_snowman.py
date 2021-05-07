@@ -186,7 +186,7 @@ def createSnowman(pipeline):
    
     # Snowman, the one and only
     snowman = sg.SceneGraphNode("snowman")
-    snowman.childs = [body, head]
+    snowman.childs = [head, body]
 
     return snowman
 
@@ -237,6 +237,15 @@ if __name__ == "__main__":
 
         # Clearing the screen in both, color and depth
         glClear(GL_COLOR_BUFFER_BIT)
+
+        theta = glfw.get_time()
+
+        leftArm = sg.findNode(snowman, "leftArm")
+        leftArm.transform = tr.matmul([
+            tr.translate(-7, 7, 0),
+            tr.rotationZ(theta),
+            #tr.scale(1, 1, 1)
+        ])
 
         # Drawing the Car
         sg.drawSceneGraphNode(snowman, pipeline, "transform", 
