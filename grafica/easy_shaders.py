@@ -22,7 +22,7 @@ def textureSimpleSetup(imgName, sWrapMode, tWrapMode, minFilterMode, maxFilterMo
      # filterMode: GL_LINEAR, GL_NEAREST
     texture = glGenTextures(1)
     glBindTexture(GL_TEXTURE_2D, texture)
-
+    
     # texture wrapping params
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, sWrapMode)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, tWrapMode)
@@ -30,9 +30,9 @@ def textureSimpleSetup(imgName, sWrapMode, tWrapMode, minFilterMode, maxFilterMo
     # texture filtering params
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilterMode)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, maxFilterMode)
-
+    
     image = Image.open(imgName)
-    img_data = np.array(list(image.getdata()), np.uint8)
+    img_data = np.array(image, np.uint8)
 
     if image.mode == "RGB":
         internalFormat = GL_RGB
@@ -176,6 +176,7 @@ class SimpleTextureShaderProgram:
 
         # Binding the VAO and executing the draw call
         glBindVertexArray(gpuShape.vao)
+        glBindTexture(GL_TEXTURE_2D, gpuShape.texture)
         glDrawElements(mode, gpuShape.size, GL_UNSIGNED_INT, None)
         
         # Unbind the current VAO

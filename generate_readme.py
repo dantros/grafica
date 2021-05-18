@@ -59,7 +59,8 @@ $DESCRIPTION$
             "opengl_version.py",
             "ex_triangle.py",
             "ex_quad.py",
-            "ex_cube.py"]),
+            "ex_cube.py",
+            "ex_stream_draw.py"]),
         ExampleFamily("Transformations",[
             "ex_transform_polygon.py",
             "ex_cpu_transforms.py",

@@ -48,6 +48,11 @@ Drawing a simple cube with OpenGL
     
 [![ex_cube.py](./screenshots/ex_cube.png)](./examples/ex_cube.py)
     
+### ex_stream_draw.py
+Drawing a deformable shape using GL_STREAM_DRAW
+    
+[![ex_stream_draw.py](./screenshots/ex_stream_draw.gif)](./examples/ex_stream_draw.py)
+    
 ## Transformations
 
     
@@ -225,18 +230,10 @@ Geometry Shader Basic Example
 
 Adapted from: https://learnopengl.com/code_viewer_gh.php?code=src/4.advanced_opengl/9.1.geometry_shader_houses/geometry_shader_houses.cpp
     
-<p align="center">
-    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_geometry_shader.py">
-    <img src="screenshots/ex_geometry_shader.png" width="400">
-    </a>
-</p>
+[![ex_geometry_shader.py](./screenshots/ex_geometry_shader.png)](./examples/ex_geometry_shader.py)
     
 ### ex_render_to_texture.py
 Render to Texture Example
     
-<p align="center">
-    <a href="https://github.com/dantros/grafica/blob/main/examples/ex_render_to_texture.py">
-    <img src="screenshots/ex_render_to_texture.gif" width="400">
-    </a>
-</p>
+[![ex_render_to_texture.py](./screenshots/ex_render_to_texture.gif)](./examples/ex_render_to_texture.py)
     

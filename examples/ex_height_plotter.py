@@ -12,6 +12,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import grafica.transformations as tr
 import grafica.basic_shapes as bs
 import grafica.easy_shaders as es
+import grafica.performance_monitor as pm
 
 __author__ = "Daniel Calderon"
 __license__ = "MIT"
@@ -95,8 +96,8 @@ if __name__ == "__main__":
 
     width = 600
     height = 600
-
-    window = glfw.create_window(width, height, "Height Plotter", None, None)
+    title = "Height Plotter"
+    window = glfw.create_window(width, height, title, None, None)
 
     if not window:
         glfw.terminate()
@@ -129,8 +130,8 @@ if __name__ == "__main__":
     simpleParaboloid = lambda x, y: paraboloid(x, y, 3.0, 3.0)
 
     # generate a numpy array with 40 samples between -10 and 10
-    xs = np.ogrid[-10:10:40j]
-    ys = np.ogrid[-10:10:40j]
+    xs = np.ogrid[-10:10:20j]
+    ys = np.ogrid[-10:10:20j]
     cpuSurface = generateMesh(xs, ys, simpleParaboloid, [1,0,0])
     gpuSurface = es.GPUShape().initBuffers()
     pipeline.setupVAO(gpuSurface)
@@ -139,7 +140,17 @@ if __name__ == "__main__":
     t0 = glfw.get_time()
     camera_theta = np.pi/7
 
+    perfMonitor = pm.PerformanceMonitor(glfw.get_time(), 0.5)
+
+    # glfw will swap buffers as soon as possible
+    glfw.swap_interval(0)
+
     while not glfw.window_should_close(window):
+
+        # Measuring performance
+        perfMonitor.update(glfw.get_time())
+        glfw.set_window_title(window, title + str(perfMonitor))
+
         # Using GLFW to check for input events
         glfw.poll_events()
 

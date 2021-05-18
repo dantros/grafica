@@ -12,6 +12,7 @@ import grafica.transformations as tr
 import grafica.basic_shapes as bs
 import grafica.scene_graph as sg
 import grafica.easy_shaders as es
+import grafica.performance_monitor as pm
 
 __author__ = "Daniel Calderon"
 __license__ = "MIT"
@@ -100,8 +101,8 @@ if __name__ == "__main__":
 
     width = 600
     height = 600
-
-    window = glfw.create_window(width, height, "3D cars via scene graph", None, None)
+    title = "3D cars via scene graph"
+    window = glfw.create_window(width, height, title, None, None)
 
     if not window:
         glfw.terminate()
@@ -146,8 +147,18 @@ if __name__ == "__main__":
             np.array([0,0,1])
         )
     glUniformMatrix4fv(glGetUniformLocation(mvpPipeline.shaderProgram, "view"), 1, GL_TRUE, view)
+    
+    perfMonitor = pm.PerformanceMonitor(glfw.get_time(), 0.5)
+
+    # glfw will swap buffers as soon as possible
+    glfw.swap_interval(0)
 
     while not glfw.window_should_close(window):
+
+        # Measuring performance
+        perfMonitor.update(glfw.get_time())
+        glfw.set_window_title(window, title + str(perfMonitor))
+
         # Using GLFW to check for input events
         glfw.poll_events()
 

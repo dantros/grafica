@@ -12,6 +12,7 @@ import grafica.transformations as tr
 import grafica.basic_shapes as bs
 import grafica.easy_shaders as es
 import grafica.lighting_shaders as ls
+import grafica.performance_monitor as pm
 from grafica.assets_path import getAssetPath
 
 __author__ = "Daniel Calderon"
@@ -122,8 +123,8 @@ if __name__ == "__main__":
 
     width = 600
     height = 600
-
-    window = glfw.create_window(width, height, "Reading a *.obj file", None, None)
+    title = "Reading a *.obj file"
+    window = glfw.create_window(width, height, title, None, None)
 
     if not window:
         glfw.terminate()
@@ -192,7 +193,17 @@ if __name__ == "__main__":
     t0 = glfw.get_time()
     camera_theta = -3*np.pi/4
 
+    perfMonitor = pm.PerformanceMonitor(glfw.get_time(), 0.5)
+
+    # glfw will swap buffers as soon as possible
+    glfw.swap_interval(0)
+
     while not glfw.window_should_close(window):
+
+        # Measuring performance
+        perfMonitor.update(glfw.get_time())
+        glfw.set_window_title(window, title + str(perfMonitor))
+
         # Using GLFW to check for input events
         glfw.poll_events()
 

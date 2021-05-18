@@ -13,6 +13,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import grafica.transformations as tr
 import grafica.basic_shapes as bs
 import grafica.easy_shaders as es
+import grafica.performance_monitor as pm
 import grafica.text_renderer as tx
 from grafica.assets_path import getAssetPath
 
@@ -51,8 +52,8 @@ if __name__ == "__main__":
 
     width = 700
     height = 700
-
-    window = glfw.create_window(width, height, "Rendering text with OpenGL textures", None, None)
+    title = "Rendering text with OpenGL textures"
+    window = glfw.create_window(width, height, title, None, None)
 
     if not window:
         glfw.terminate()
@@ -126,7 +127,17 @@ if __name__ == "__main__":
     second = now.second
     color = [1.0,1.0,1.0]
 
+    perfMonitor = pm.PerformanceMonitor(glfw.get_time(), 0.5)
+
+    # glfw will swap buffers as soon as possible
+    glfw.swap_interval(0)
+
     while not glfw.window_should_close(window):
+
+        # Measuring performance
+        perfMonitor.update(glfw.get_time())
+        glfw.set_window_title(window, title + str(perfMonitor))
+
         # Using GLFW to check for input events
         glfw.poll_events()
 
@@ -155,8 +166,8 @@ if __name__ == "__main__":
         timeShape = tx.textToShape(timeStr, timeCharSize, timeCharSize)
 
         # Updating GPU memory...
-        gpuDate.fillBuffers(dateShape.vertices, dateShape.indices, GL_DYNAMIC_DRAW)
-        gpuTime.fillBuffers(timeShape.vertices, timeShape.indices, GL_DYNAMIC_DRAW)
+        gpuDate.fillBuffers(dateShape.vertices, dateShape.indices, GL_STREAM_DRAW)
+        gpuTime.fillBuffers(timeShape.vertices, timeShape.indices, GL_STREAM_DRAW)
 
         if now.second != second:
             second = now.second
