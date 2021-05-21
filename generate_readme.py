@@ -73,6 +73,7 @@ $DESCRIPTION$
             "ex_texture_boo.py",
             "ex_texture_quad.py",
             "ex_mipmap.py",
+            "ex_binding_textures.py",
             "ex_text_renderer.py"]),
         ExampleFamily("Scene Graphs",[
             "ex_scene_graph_2dcars.py",

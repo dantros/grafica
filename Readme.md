@@ -124,6 +124,11 @@ Using mipmaps
     
 [![ex_mipmap.py](./screenshots/ex_mipmap.png)](./examples/ex_mipmap.py)
     
+### ex_binding_textures.py
+Using 2 different textures in the same Fragment Shader
+    
+[![ex_binding_textures.py](./screenshots/ex_binding_textures.gif)](./examples/ex_binding_textures.py)
+    
 ### ex_text_renderer.py
 Example drawing text with OpenGL textures
     
