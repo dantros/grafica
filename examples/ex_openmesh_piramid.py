@@ -1,5 +1,5 @@
 # coding=utf-8
-"""Using OpenMesh to compute normals"""
+"""Using OpenMesh to compute normals for lighting effects"""
 
 import glfw
 import copy
@@ -46,7 +46,7 @@ def on_key(window, key, scancode, action, mods):
         glfw.set_window_should_close(window, True)
 
 
-def createPiramidMesh():
+def createPiramidMesh(textured=False):
 
     mesh = openmesh.TriMesh()
 
@@ -62,6 +62,16 @@ def createPiramidMesh():
     mesh.add_face([nw, sw, t]) # W
     mesh.add_face([ne, se, sw]) # Bottom
     mesh.add_face([sw, nw, ne]) # Bottom
+
+    if textured:
+        # Do note the trick, faces at the east and west are sampling the texture in the opposite direction.
+        # If you do not want to do this, you need to replicate the spatial vertex and assign different texture coordinates to each of them.
+        # This is only to use the same texture on each side of the piramid.
+        mesh.set_texcoord2D(nw, [1.0, 1.0])
+        mesh.set_texcoord2D(ne, [0.0, 1.0])
+        mesh.set_texcoord2D(sw, [0.0, 1.0])
+        mesh.set_texcoord2D(se, [1.0, 1.0])
+        mesh.set_texcoord2D(t,  [0.5, 0.0])
 
     return mesh
 
@@ -126,6 +136,72 @@ def toShape(mesh, r, g, b, verbose=False):
     return bs.Shape(vertices, indices)
 
 
+def toTexturedShape(mesh, verbose=False):
+    assert isinstance(mesh, openmesh.TriMesh)
+
+    # Requesting normals per face
+    mesh.request_face_normals()
+
+    # Requesting normals per vertex
+    mesh.request_vertex_normals()
+
+    # Computing all requested normals
+    mesh.update_normals()
+
+    # You can also update specific normals
+    #mesh.update_face_normals()
+    #mesh.update_vertex_normals()
+    #mesh.update_halfedge_normals()
+
+    # At this point, we are sure we have normals computed for each face.
+    assert mesh.has_face_normals()
+
+    vertices = []
+    indices = []
+
+    # To understand how iteraors and circulators works in OpenMesh, check the documentation at:
+    # https://www.graphics.rwth-aachen.de:9000/OpenMesh/openmesh-python/-/blob/master/docs/iterators.rst
+
+    def extractCoordinates(numpyVector3):
+        assert len(numpyVector3) == 3
+        x = vertex[0]
+        y = vertex[1]
+        z = vertex[2]
+        return [x,y,z]
+
+    # This is inneficient, but it works!
+    # You can always optimize it further :)
+
+    # Checking each face
+    for faceIt in mesh.faces():
+        faceId = faceIt.idx()
+        if verbose: print("face: ", faceId)
+
+        # Checking each vertex of the face
+        for faceVertexIt in mesh.fv(faceIt):
+            faceVertexId = faceVertexIt.idx()
+
+            # Obtaining the position and normal of each vertex
+            vertex = mesh.point(faceVertexIt)
+            normal = mesh.normal(faceVertexIt)
+            if verbose: print("vertex ", faceVertexId, "-> position: ", vertex, " normal: ", normal)
+
+            assert mesh.has_vertex_texcoords2D()
+
+            x, y, z = extractCoordinates(vertex)
+            texcoords = mesh.texcoord2D(faceVertexIt)
+            tx = texcoords[0]
+            ty = texcoords[1]
+            nx, ny, nz = extractCoordinates(normal)
+
+            vertices += [x, y, z, tx, ty, nx, ny, nz]
+            indices += [len(vertices)//8 - 1]
+        
+        if verbose: print()
+
+    return bs.Shape(vertices, indices)
+
+
 if __name__ == "__main__":
 
     # Initialize glfw
@@ -148,8 +224,10 @@ if __name__ == "__main__":
 
     # Different shader programs for different lighting strategies
     lightingPipeline = ls.SimplePhongShaderProgram()
+    texturePipeline = ls.SimpleTexturePhongShaderProgram()
     # if your machine does not support phong, you can use Gouraud instead.
     #lightingPipeline = ls.SimpleGouraudShaderProgram()
+    #texturePipeline = ls.SimpleTextureGouraudShaderProgram()
 
     # This shader program does not consider lighting
     colorPipeline = es.SimpleModelViewProjectionShaderProgram()
@@ -175,14 +253,43 @@ if __name__ == "__main__":
     # this case: flatPipeline, gouraudPipeline and phongPipeline. Hence, the VAO setup can
     # be the same.
     meshPiramid = createPiramidMesh()
-    shapePiramid = toShape(meshPiramid, 0,0,1, True)
-    
-    print(shapePiramid)
-
+    shapePiramid = toShape(meshPiramid, 0.6,0.1,0.1, True)
     gpuPiramid = createGPUShape(lightingPipeline, shapePiramid)
+
+    meshTexturedPiramid = createPiramidMesh(True)
+    shapeTexturedPiramid = toTexturedShape(meshTexturedPiramid, True)
+    gpuTexturedPiramid = createGPUShape(texturePipeline, shapeTexturedPiramid)
+    gpuTexturedPiramid.texture = es.textureSimpleSetup(
+        getAssetPath("bricks.jpg"), GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, GL_LINEAR, GL_LINEAR)
+    
+    #print(shapeTexturedPiramid)
 
     t0 = glfw.get_time()
     camera_theta = np.pi/4
+
+    def setupLightingDefaults(pipeline):
+        glUseProgram(pipeline.shaderProgram)
+
+        # White light in all components: ambient, diffuse and specular.
+        glUniform3f(glGetUniformLocation(pipeline.shaderProgram, "La"), 1.0, 1.0, 1.0)
+        glUniform3f(glGetUniformLocation(pipeline.shaderProgram, "Ld"), 1.0, 1.0, 1.0)
+        glUniform3f(glGetUniformLocation(pipeline.shaderProgram, "Ls"), 1.0, 1.0, 1.0)
+
+        # Object is barely visible at only ambient. Bright white for diffuse and specular components.
+        glUniform3f(glGetUniformLocation(pipeline.shaderProgram, "Ka"), 0.2, 0.2, 0.2)
+        glUniform3f(glGetUniformLocation(pipeline.shaderProgram, "Kd"), 0.9, 0.9, 0.9)
+        glUniform3f(glGetUniformLocation(pipeline.shaderProgram, "Ks"), 1.0, 1.0, 1.0)
+        
+        glUniform3f(glGetUniformLocation(pipeline.shaderProgram, "lightPosition"), -5, -5, 5)
+        glUniform1ui(glGetUniformLocation(pipeline.shaderProgram, "shininess"), 100)
+
+        glUniform1f(glGetUniformLocation(pipeline.shaderProgram, "constantAttenuation"), 0.0001)
+        glUniform1f(glGetUniformLocation(pipeline.shaderProgram, "linearAttenuation"), 0.03)
+        glUniform1f(glGetUniformLocation(pipeline.shaderProgram, "quadraticAttenuation"), 0.01)
+
+    # Setting up uniforms for both lighting pipelines, colored and textured
+    setupLightingDefaults(lightingPipeline)
+    setupLightingDefaults(texturePipeline)
 
     while not glfw.window_should_close(window):
 
@@ -228,37 +335,22 @@ if __name__ == "__main__":
         glUniformMatrix4fv(glGetUniformLocation(colorPipeline.shaderProgram, "view"), 1, GL_TRUE, view)
         glUniformMatrix4fv(glGetUniformLocation(colorPipeline.shaderProgram, "model"), 1, GL_TRUE, tr.identity())
         colorPipeline.drawCall(gpuAxis, GL_LINES)
-        
+
+        # Drawing the single color piramid
         glUseProgram(lightingPipeline.shaderProgram)
-
-        # Setting all uniform shader variables
-        
-        # White light in all components: ambient, diffuse and specular.
-        glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "La"), 1.0, 1.0, 1.0)
-        glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ld"), 1.0, 1.0, 1.0)
-        glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ls"), 1.0, 1.0, 1.0)
-
-        # Object is barely visible at only ambient. Bright white for diffuse and specular components.
-        glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ka"), 0.2, 0.2, 0.2)
-        glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Kd"), 0.9, 0.9, 0.9)
-        glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "Ks"), 1.0, 1.0, 1.0)
-
-        # TO DO: Explore different parameter combinations to understand their effect!
-        
-        glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "lightPosition"), -5, -5, 5)
         glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "viewPosition"), viewPos[0], viewPos[1], viewPos[2])
-        glUniform1ui(glGetUniformLocation(lightingPipeline.shaderProgram, "shininess"), 100)
-
-        glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "constantAttenuation"), 0.0001)
-        glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "linearAttenuation"), 0.03)
-        glUniform1f(glGetUniformLocation(lightingPipeline.shaderProgram, "quadraticAttenuation"), 0.01)
-
         glUniformMatrix4fv(glGetUniformLocation(lightingPipeline.shaderProgram, "projection"), 1, GL_TRUE, projection)
         glUniformMatrix4fv(glGetUniformLocation(lightingPipeline.shaderProgram, "view"), 1, GL_TRUE, view)
-
-        # Drawing
         glUniformMatrix4fv(glGetUniformLocation(lightingPipeline.shaderProgram, "model"), 1, GL_TRUE, tr.translate(0.75,0,0))
         lightingPipeline.drawCall(gpuPiramid)
+
+        # Drawing the textured piramid
+        glUseProgram(texturePipeline.shaderProgram)
+        glUniform3f(glGetUniformLocation(texturePipeline.shaderProgram, "viewPosition"), viewPos[0], viewPos[1], viewPos[2])
+        glUniformMatrix4fv(glGetUniformLocation(texturePipeline.shaderProgram, "projection"), 1, GL_TRUE, projection)
+        glUniformMatrix4fv(glGetUniformLocation(texturePipeline.shaderProgram, "view"), 1, GL_TRUE, view)
+        glUniformMatrix4fv(glGetUniformLocation(texturePipeline.shaderProgram, "model"), 1, GL_TRUE, tr.translate(-0.75,0,0))
+        texturePipeline.drawCall(gpuTexturedPiramid)
         
         # Once the drawing is rendered, buffers are swap so an uncomplete drawing is never seen.
         glfw.swap_buffers(window)
@@ -266,5 +358,6 @@ if __name__ == "__main__":
     # freeing GPU memory
     gpuAxis.clear()
     gpuPiramid.clear()
+    gpuTexturedPiramid.clear()
 
     glfw.terminate()
