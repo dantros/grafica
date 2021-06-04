@@ -39,9 +39,6 @@ def on_key(window, key, scancode, action, mods):
     if key == glfw.KEY_SPACE:
         controller.fillPolygon = not controller.fillPolygon
 
-    elif key == glfw.KEY_LEFT_CONTROL:
-        controller.showAxis = not controller.showAxis
-
     elif key == glfw.KEY_ESCAPE:
         glfw.set_window_should_close(window, True)
 
@@ -75,8 +72,10 @@ def createPiramidMesh(textured=False):
 
     return mesh
 
-def toShape(mesh, r, g, b, verbose=False):
+
+def toShape(mesh, color=None, textured=False, verbose=False):
     assert isinstance(mesh, openmesh.TriMesh)
+    assert (color != None) != textured, "The mesh will be colored or textured, only one of these need to be specified."
 
     # Requesting normals per face
     mesh.request_face_normals()
@@ -108,7 +107,7 @@ def toShape(mesh, r, g, b, verbose=False):
         z = vertex[2]
         return [x,y,z]
 
-    # This is inneficient, but it works!
+    # This is inefficient, but it works!
     # You can always optimize it further :)
 
     # Checking each face
@@ -128,74 +127,24 @@ def toShape(mesh, r, g, b, verbose=False):
             x, y, z = extractCoordinates(vertex)
             nx, ny, nz = extractCoordinates(normal)
 
-            vertices += [x, y, z, r, g, b, nx, ny, nz]
-            indices += [len(vertices)//9 - 1]
-        
-        if verbose: print()
+            if textured:
+                assert mesh.has_vertex_texcoords2D()
 
-    return bs.Shape(vertices, indices)
+                texcoords = mesh.texcoord2D(faceVertexIt)
+                tx = texcoords[0]
+                ty = texcoords[1]
+                
+                vertices += [x, y, z, tx, ty, nx, ny, nz]
+                indices += [len(vertices)//8 - 1]
+            else:
+                assert color != None
 
+                r = color[0]
+                g = color[1]
+                b = color[2]
 
-def toTexturedShape(mesh, verbose=False):
-    assert isinstance(mesh, openmesh.TriMesh)
-
-    # Requesting normals per face
-    mesh.request_face_normals()
-
-    # Requesting normals per vertex
-    mesh.request_vertex_normals()
-
-    # Computing all requested normals
-    mesh.update_normals()
-
-    # You can also update specific normals
-    #mesh.update_face_normals()
-    #mesh.update_vertex_normals()
-    #mesh.update_halfedge_normals()
-
-    # At this point, we are sure we have normals computed for each face.
-    assert mesh.has_face_normals()
-
-    vertices = []
-    indices = []
-
-    # To understand how iteraors and circulators works in OpenMesh, check the documentation at:
-    # https://www.graphics.rwth-aachen.de:9000/OpenMesh/openmesh-python/-/blob/master/docs/iterators.rst
-
-    def extractCoordinates(numpyVector3):
-        assert len(numpyVector3) == 3
-        x = vertex[0]
-        y = vertex[1]
-        z = vertex[2]
-        return [x,y,z]
-
-    # This is inneficient, but it works!
-    # You can always optimize it further :)
-
-    # Checking each face
-    for faceIt in mesh.faces():
-        faceId = faceIt.idx()
-        if verbose: print("face: ", faceId)
-
-        # Checking each vertex of the face
-        for faceVertexIt in mesh.fv(faceIt):
-            faceVertexId = faceVertexIt.idx()
-
-            # Obtaining the position and normal of each vertex
-            vertex = mesh.point(faceVertexIt)
-            normal = mesh.normal(faceVertexIt)
-            if verbose: print("vertex ", faceVertexId, "-> position: ", vertex, " normal: ", normal)
-
-            assert mesh.has_vertex_texcoords2D()
-
-            x, y, z = extractCoordinates(vertex)
-            texcoords = mesh.texcoord2D(faceVertexIt)
-            tx = texcoords[0]
-            ty = texcoords[1]
-            nx, ny, nz = extractCoordinates(normal)
-
-            vertices += [x, y, z, tx, ty, nx, ny, nz]
-            indices += [len(vertices)//8 - 1]
+                vertices += [x, y, z, r, g, b, nx, ny, nz]
+                indices += [len(vertices)//9 - 1]
         
         if verbose: print()
 
@@ -253,11 +202,11 @@ if __name__ == "__main__":
     # this case: flatPipeline, gouraudPipeline and phongPipeline. Hence, the VAO setup can
     # be the same.
     meshPiramid = createPiramidMesh()
-    shapePiramid = toShape(meshPiramid, 0.6,0.1,0.1, True)
+    shapePiramid = toShape(meshPiramid, color=(0.6, 0.1, 0.1), verbose=True)
     gpuPiramid = createGPUShape(lightingPipeline, shapePiramid)
 
     meshTexturedPiramid = createPiramidMesh(True)
-    shapeTexturedPiramid = toTexturedShape(meshTexturedPiramid, True)
+    shapeTexturedPiramid = toShape(meshTexturedPiramid, textured=True, verbose=False)
     gpuTexturedPiramid = createGPUShape(texturePipeline, shapeTexturedPiramid)
     gpuTexturedPiramid.texture = es.textureSimpleSetup(
         getAssetPath("bricks.jpg"), GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, GL_LINEAR, GL_LINEAR)
