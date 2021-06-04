@@ -43,7 +43,7 @@ def on_key(window, key, scancode, action, mods):
         glfw.set_window_should_close(window, True)
 
 
-def createPiramidMesh(textured=False):
+def createPyramidMesh(textured=False):
 
     mesh = openmesh.TriMesh()
 
@@ -63,7 +63,7 @@ def createPiramidMesh(textured=False):
     if textured:
         # Do note the trick, faces at the east and west are sampling the texture in the opposite direction.
         # If you do not want to do this, you need to replicate the spatial vertex and assign different texture coordinates to each of them.
-        # This is only to use the same texture on each side of the piramid.
+        # This is only to use the same texture on each side of the pyramid.
         mesh.set_texcoord2D(nw, [1.0, 1.0])
         mesh.set_texcoord2D(ne, [0.0, 1.0])
         mesh.set_texcoord2D(sw, [0.0, 1.0])
@@ -201,17 +201,17 @@ if __name__ == "__main__":
     # Note: the vertex attribute layout (stride) is the same for the 3 lighting pipelines in
     # this case: flatPipeline, gouraudPipeline and phongPipeline. Hence, the VAO setup can
     # be the same.
-    meshPiramid = createPiramidMesh()
-    shapePiramid = toShape(meshPiramid, color=(0.6, 0.1, 0.1), verbose=True)
-    gpuPiramid = createGPUShape(lightingPipeline, shapePiramid)
+    meshPyramid = createPyramidMesh()
+    shapePyramid = toShape(meshPyramid, color=(0.6, 0.1, 0.1), verbose=True)
+    gpuPyramid = createGPUShape(lightingPipeline, shapePyramid)
 
-    meshTexturedPiramid = createPiramidMesh(True)
-    shapeTexturedPiramid = toShape(meshTexturedPiramid, textured=True, verbose=False)
-    gpuTexturedPiramid = createGPUShape(texturePipeline, shapeTexturedPiramid)
-    gpuTexturedPiramid.texture = es.textureSimpleSetup(
+    meshTexturedPyramid = createPyramidMesh(True)
+    shapeTexturedPyramid = toShape(meshTexturedPyramid, textured=True, verbose=False)
+    gpuTexturedPyramid = createGPUShape(texturePipeline, shapeTexturedPyramid)
+    gpuTexturedPyramid.texture = es.textureSimpleSetup(
         getAssetPath("bricks.jpg"), GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, GL_LINEAR, GL_LINEAR)
     
-    #print(shapeTexturedPiramid)
+    #print(shapeTexturedPyramid)
 
     t0 = glfw.get_time()
     camera_theta = np.pi/4
@@ -285,28 +285,28 @@ if __name__ == "__main__":
         glUniformMatrix4fv(glGetUniformLocation(colorPipeline.shaderProgram, "model"), 1, GL_TRUE, tr.identity())
         colorPipeline.drawCall(gpuAxis, GL_LINES)
 
-        # Drawing the single color piramid
+        # Drawing the single color pyramid
         glUseProgram(lightingPipeline.shaderProgram)
         glUniform3f(glGetUniformLocation(lightingPipeline.shaderProgram, "viewPosition"), viewPos[0], viewPos[1], viewPos[2])
         glUniformMatrix4fv(glGetUniformLocation(lightingPipeline.shaderProgram, "projection"), 1, GL_TRUE, projection)
         glUniformMatrix4fv(glGetUniformLocation(lightingPipeline.shaderProgram, "view"), 1, GL_TRUE, view)
         glUniformMatrix4fv(glGetUniformLocation(lightingPipeline.shaderProgram, "model"), 1, GL_TRUE, tr.translate(0.75,0,0))
-        lightingPipeline.drawCall(gpuPiramid)
+        lightingPipeline.drawCall(gpuPyramid)
 
-        # Drawing the textured piramid
+        # Drawing the textured pyramid
         glUseProgram(texturePipeline.shaderProgram)
         glUniform3f(glGetUniformLocation(texturePipeline.shaderProgram, "viewPosition"), viewPos[0], viewPos[1], viewPos[2])
         glUniformMatrix4fv(glGetUniformLocation(texturePipeline.shaderProgram, "projection"), 1, GL_TRUE, projection)
         glUniformMatrix4fv(glGetUniformLocation(texturePipeline.shaderProgram, "view"), 1, GL_TRUE, view)
         glUniformMatrix4fv(glGetUniformLocation(texturePipeline.shaderProgram, "model"), 1, GL_TRUE, tr.translate(-0.75,0,0))
-        texturePipeline.drawCall(gpuTexturedPiramid)
+        texturePipeline.drawCall(gpuTexturedPyramid)
         
         # Once the drawing is rendered, buffers are swap so an uncomplete drawing is never seen.
         glfw.swap_buffers(window)
 
     # freeing GPU memory
     gpuAxis.clear()
-    gpuPiramid.clear()
-    gpuTexturedPiramid.clear()
+    gpuPyramid.clear()
+    gpuTexturedPyramid.clear()
 
     glfw.terminate()
