@@ -97,7 +97,7 @@ $DESCRIPTION$
             "ex_delaunay.py",
             "ex_triangle_mesh.py",
             "ex_triangle_mesh_builder.py",
-            "ex_openmesh_piramid.py"
+            "ex_openmesh_pyramid.py"
         ]),
         ExampleFamily("Advanced OpenGL",[
             "ex_geometry_shader.py",
