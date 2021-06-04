@@ -227,6 +227,11 @@ Face based data structure for a triangle mesh
 ### ex_triangle_mesh_builder.py
 Using the dedicated face based triangle mesh builder
     
+### ex_openmesh_piramid.py
+Using OpenMesh to compute normals for lighting effects
+    
+[![ex_openmesh_piramid.py](./screenshots/ex_openmesh_piramid.png)](./examples/ex_openmesh_piramid.py)
+    
 ## Advanced OpenGL
 
     
