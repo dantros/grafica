@@ -232,6 +232,14 @@ Using OpenMesh to compute normals for lighting effects
     
 [![ex_openmesh_pyramid.py](./screenshots/ex_openmesh_pyramid.png)](./examples/ex_openmesh_pyramid.py)
     
+## Physics and Collisions
+
+    
+### ex_collisions.py
+Circles, collisions and gravity
+    
+[![ex_collisions.py](./screenshots/ex_collisions.gif)](./examples/ex_collisions.py)
+    
 ## Advanced OpenGL
 
     

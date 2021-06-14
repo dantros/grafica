@@ -25,7 +25,8 @@ class PerformanceMonitor:
         It must be called once per frame to update the internal metrics
         """
         self.framesCounter += 1
-        self.timer += currentTime - self.currentTime
+        self.deltaTime = currentTime - self.currentTime
+        self.timer += self.deltaTime
         self.currentTime = currentTime
         
         if self.timer > self.period:
@@ -33,6 +34,12 @@ class PerformanceMonitor:
             self.milisecondsPerFrame = 1000.0 * self.timer / self.framesCounter
             self.framesCounter = 0
             self.timer = 0.0
+
+    def getDeltaTime(self):
+        """
+        Get the time spent since the latest update.
+        """
+        return self.deltaTime
         
     def getFPS(self):
         """

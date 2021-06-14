@@ -99,6 +99,9 @@ $DESCRIPTION$
             "ex_triangle_mesh_builder.py",
             "ex_openmesh_pyramid.py"
         ]),
+        ExampleFamily("Physics and Collisions",[
+            "ex_collisions.py",
+        ]),
         ExampleFamily("Advanced OpenGL",[
             "ex_geometry_shader.py",
             "ex_render_to_texture.py"

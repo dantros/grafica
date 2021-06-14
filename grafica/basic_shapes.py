@@ -147,6 +147,36 @@ def createTextureQuad(nx, ny):
     return Shape(vertices, indices)
 
 
+def createColorCircle(N, r, g, b):
+
+    # First vertex at the center
+    colorOffsetAtCenter = 0.3
+    vertices = [0, 0, 0,
+        r + colorOffsetAtCenter,
+        g + colorOffsetAtCenter,
+        b + colorOffsetAtCenter]
+    indices = []
+
+    dtheta = 2 * math.pi / N
+
+    for i in range(N):
+        theta = i * dtheta
+
+        vertices += [
+            # vertex coordinates
+            0.5 * math.cos(theta), 0.5 * math.sin(theta), 0,
+            # color
+            r, g, b]
+
+        # A triangle is created using the center, this and the next vertex
+        indices += [0, i, i+1]
+
+    # The final triangle connects back to the second vertex
+    indices += [0, N, 1]
+
+    return Shape(vertices, indices)
+
+
 def createRainbowCircle(N):
 
     # First vertex at the center, white color
