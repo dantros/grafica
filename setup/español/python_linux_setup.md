@@ -79,7 +79,7 @@ La respuesta debiera ser
 
     /home/[username]/python-cg/bin/pip
 
-Instalemos algunas depenedencias necesarias:
+Instalemos algunas dependencias necesarias:
 
     sudo apt-get install python3-dev libglfw3 libglfw3-dev
 
