@@ -75,7 +75,15 @@ y luego realizar una nueva configuración.
 Instalando las librerías necesarias
 -----------------------------------
 
-Regrese al environment python-cg, una vez ahí ejecute:
+Regrese al environment python-cg, una vez ahí ejecute el siguiente comando para ver si está instalado pip:
+
+    pip
+    
+Si no arroja error o no encontrado puede seguir, de lo contrario tiene que instalar pip con el comando:
+
+    conda install pip
+    
+Ahora si puede instalar las librerías:
 
     pip install numpy scipy matplotlib pyopengl glfw ipython jupyter pillow imgui[glfw]
 
