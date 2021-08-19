@@ -72,20 +72,6 @@ Si comete algún error, puede eliminar un environment y todas sus librerias con
 y luego realizar una nueva configuración.
 
 
-Agregando conda-forge
----------------------
-
-Para ejecutar los ejemplos, necesitamos la librería GLFW, esta no se encuentra en los repositorios por defecto de anaconda, por lo que debemos añadir un repositorio adicional llamado 'conda-forge'. Ejecute lo siguiente:
-
-    conda config --add channels conda-forge
-
-luego, puede verificar los canales disponibles en su sistema con:
-
-    conda config --get channels
-
-Ahi debiera ver una lista con 'defaults' y 'conda-forge'
-
-
 Instalando las librerías necesarias
 -----------------------------------
 
