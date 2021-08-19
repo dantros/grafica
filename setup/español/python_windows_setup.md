@@ -91,13 +91,9 @@ Instalando las librerías necesarias
 
 Regrese al environment python-cg, una vez ahí ejecute:
 
-    conda install python ipython jupyter numpy scipy matplotlib pillow glfw pyglfw pyopengl
+    pip install numpy scipy matplotlib pyopengl glfw ipython jupyter pillow imgui[glfw]
 
 Es posible que se le pida actualizar algunas dependencias, ingrese 'y' para aceptar.
-
-Lamentablemente imgui no se encuentra aún disponible en anaconda, pero puede instalarlo con pip ingresando:
-
-    pip install imgui[glfw]
 
 
 # Python Nativo (Si el método anterior no funciona)
