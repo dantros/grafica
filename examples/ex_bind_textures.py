@@ -41,7 +41,7 @@ class DoubleTextureTransformShaderProgram:
     def __init__(self):
 
         vertex_shader = """
-            #version 130
+            #version 330
 
             uniform mat4 transform;
 
@@ -58,7 +58,7 @@ class DoubleTextureTransformShaderProgram:
             """
 
         fragment_shader = """
-            #version 130
+            #version 330
 
             // Vector que contiene en las dos primeras componentes la posicion (x, y) del fragmento en la ventana
             // Con el origen en la esquina superior izquierda
