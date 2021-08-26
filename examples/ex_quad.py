@@ -45,7 +45,7 @@ def createShaderProgram():
     
     # Defining shaders for our pipeline
     vertex_shader = """
-    #version 130
+    #version 330
     in vec3 position;
     in vec3 color;
 
@@ -59,7 +59,7 @@ def createShaderProgram():
     """
 
     fragment_shader = """
-    #version 130
+    #version 330
 
     in vec3 fragColor;
     out vec4 outColor;
@@ -69,6 +69,10 @@ def createShaderProgram():
         outColor = vec4(fragColor, 1.0f);
     }
     """
+
+    # Binding artificial vertex array object for validation
+    VAO = glGenVertexArrays(1)
+    glBindVertexArray(VAO)
 
     # Assembling the shader program (pipeline) with both shaders
     shaderProgram = OpenGL.GL.shaders.compileProgram(
