@@ -20,7 +20,7 @@ El símbolo >>> indica el lugar donde usted puede enviar comandos al intérprete
 Instalación de Brew
 ---------------------
 
-Primero hay que revisar si ``brew`` esta instalado, para esto habra su terminal
+Primero hay que revisar si ``brew`` esta instalado, para esto abra su terminal
 
 Ejecute ``brew``. Si la respuesta es algo de este tipo:
 
