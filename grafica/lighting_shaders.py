@@ -79,6 +79,11 @@ class SimpleFlatShaderProgram():
             }
             """
 
+        # Binding artificial vertex array object for validation
+        VAO = glGenVertexArrays(1)
+        glBindVertexArray(VAO)
+
+
         self.shaderProgram = OpenGL.GL.shaders.compileProgram(
             OpenGL.GL.shaders.compileShader(vertex_shader, OpenGL.GL.GL_VERTEX_SHADER),
             OpenGL.GL.shaders.compileShader(fragment_shader, OpenGL.GL.GL_FRAGMENT_SHADER))
@@ -200,6 +205,11 @@ class SimpleTextureFlatShaderProgram():
             }
             """
 
+        # Binding artificial vertex array object for validation
+        VAO = glGenVertexArrays(1)
+        glBindVertexArray(VAO)
+
+
         self.shaderProgram = OpenGL.GL.shaders.compileProgram(
             OpenGL.GL.shaders.compileShader(vertex_shader, OpenGL.GL.GL_VERTEX_SHADER),
             OpenGL.GL.shaders.compileShader(fragment_shader, OpenGL.GL.GL_FRAGMENT_SHADER))
@@ -315,6 +325,11 @@ class SimpleGouraudShaderProgram():
                 fragColor = vertexColor;
             }
             """
+
+        # Binding artificial vertex array object for validation
+        VAO = glGenVertexArrays(1)
+        glBindVertexArray(VAO)
+
 
         self.shaderProgram = OpenGL.GL.shaders.compileProgram(
             OpenGL.GL.shaders.compileShader(vertex_shader, OpenGL.GL.GL_VERTEX_SHADER),
@@ -437,6 +452,11 @@ class SimpleTextureGouraudShaderProgram():
             }
             """
 
+        # Binding artificial vertex array object for validation
+        VAO = glGenVertexArrays(1)
+        glBindVertexArray(VAO)
+
+
         self.shaderProgram = OpenGL.GL.shaders.compileProgram(
             OpenGL.GL.shaders.compileShader(vertex_shader, OpenGL.GL.GL_VERTEX_SHADER),
             OpenGL.GL.shaders.compileShader(fragment_shader, OpenGL.GL.GL_FRAGMENT_SHADER))
@@ -558,6 +578,11 @@ class SimplePhongShaderProgram:
                 fragColor = vec4(result, 1.0);
             }
             """
+
+        # Binding artificial vertex array object for validation
+        VAO = glGenVertexArrays(1)
+        glBindVertexArray(VAO)
+
 
         self.shaderProgram = OpenGL.GL.shaders.compileProgram(
             OpenGL.GL.shaders.compileShader(vertex_shader, OpenGL.GL.GL_VERTEX_SHADER),
@@ -682,6 +707,11 @@ class SimpleTexturePhongShaderProgram:
                 fragColor = vec4(result, 1.0);
             }
             """
+
+        # Binding artificial vertex array object for validation
+        VAO = glGenVertexArrays(1)
+        glBindVertexArray(VAO)
+
 
         self.shaderProgram = OpenGL.GL.shaders.compileProgram(
             OpenGL.GL.shaders.compileShader(vertex_shader, OpenGL.GL.GL_VERTEX_SHADER),

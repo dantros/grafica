@@ -109,7 +109,7 @@ class TextureTextRendererShaderProgram:
     def __init__(self):
 
         vertex_shader = """
-            #version 130
+            #version 330
 
             uniform mat4 transform;
 
@@ -126,7 +126,7 @@ class TextureTextRendererShaderProgram:
             """
 
         fragment_shader = """
-            #version 130
+            #version 330
 
             in vec3 outTexCoords;
 
@@ -150,6 +150,11 @@ class TextureTextRendererShaderProgram:
                 }
             }
             """
+
+        # Binding artificial vertex array object for validation
+        VAO = glGenVertexArrays(1)
+        glBindVertexArray(VAO)
+
 
         self.shaderProgram = OpenGL.GL.shaders.compileProgram(
             OpenGL.GL.shaders.compileShader(vertex_shader, GL_VERTEX_SHADER),
