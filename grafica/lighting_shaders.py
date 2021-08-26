@@ -10,7 +10,7 @@ class SimpleFlatShaderProgram():
     def __init__(self):
 
         vertex_shader = """
-            #version 130
+            #version 330
 
             in vec3 position;
             in vec3 color;
@@ -68,7 +68,7 @@ class SimpleFlatShaderProgram():
             """
 
         fragment_shader = """
-            #version 130
+            #version 330
 
             flat in vec4 vertexColor;
             out vec4 fragColor;
@@ -124,7 +124,7 @@ class SimpleTextureFlatShaderProgram():
     def __init__(self):
 
         vertex_shader = """
-            #version 130
+            #version 330
 
             in vec3 position;
             in vec2 texCoords;
@@ -184,7 +184,7 @@ class SimpleTextureFlatShaderProgram():
             """
 
         fragment_shader = """
-            #version 130
+            #version 330
 
             flat in vec3 vertexLightColor;
             in vec2 fragTexCoords;
@@ -247,7 +247,7 @@ class SimpleGouraudShaderProgram():
     def __init__(self):
 
         vertex_shader = """
-            #version 130
+            #version 330
 
             in vec3 position;
             in vec3 color;
@@ -305,7 +305,7 @@ class SimpleGouraudShaderProgram():
             """
 
         fragment_shader = """
-            #version 130
+            #version 330
 
             in vec4 vertexColor;
             out vec4 fragColor;
@@ -361,7 +361,7 @@ class SimpleTextureGouraudShaderProgram():
     def __init__(self):
 
         vertex_shader = """
-            #version 130
+            #version 330
 
             in vec3 position;
             in vec2 texCoords;
@@ -421,7 +421,7 @@ class SimpleTextureGouraudShaderProgram():
             """
 
         fragment_shader = """
-            #version 130
+            #version 330
 
             in vec3 vertexLightColor;
             in vec2 fragTexCoords;

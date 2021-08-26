@@ -54,7 +54,7 @@ class SimpleShaderProgram:
     def __init__(self):
 
         vertex_shader = """
-            #version 130
+            #version 330
 
             in vec3 position;
             in vec3 color;
@@ -68,7 +68,7 @@ class SimpleShaderProgram:
             """
 
         fragment_shader = """
-            #version 130
+            #version 330
             in vec3 newColor;
 
             out vec4 outColor;
@@ -119,7 +119,7 @@ class SimpleTextureShaderProgram:
     def __init__(self):
 
         vertex_shader = """
-            #version 130
+            #version 330
 
             in vec3 position;
             in vec2 texCoords;
@@ -134,7 +134,7 @@ class SimpleTextureShaderProgram:
             """
 
         fragment_shader = """
-            #version 130
+            #version 330
 
             in vec2 outTexCoords;
 
@@ -188,7 +188,7 @@ class SimpleTransformShaderProgram:
     def __init__(self):
 
         vertex_shader = """
-            #version 130
+            #version 330
             
             uniform mat4 transform;
 
@@ -205,7 +205,7 @@ class SimpleTransformShaderProgram:
             """
 
         fragment_shader = """
-            #version 130
+            #version 330
             in vec3 newColor;
 
             out vec4 outColor;
@@ -255,7 +255,7 @@ class SimpleTextureTransformShaderProgram:
     def __init__(self):
 
         vertex_shader = """
-            #version 130
+            #version 330
 
             uniform mat4 transform;
 
@@ -272,7 +272,7 @@ class SimpleTextureTransformShaderProgram:
             """
 
         fragment_shader = """
-            #version 130
+            #version 330
 
             in vec2 outTexCoords;
 
@@ -328,7 +328,7 @@ class SimpleModelViewProjectionShaderProgram:
     def __init__(self):
 
         vertex_shader = """
-            #version 130
+            #version 330
             
             uniform mat4 projection;
             uniform mat4 view;
@@ -346,7 +346,7 @@ class SimpleModelViewProjectionShaderProgram:
             """
 
         fragment_shader = """
-            #version 130
+            #version 330
             in vec3 newColor;
 
             out vec4 outColor;
@@ -397,7 +397,7 @@ class SimpleTextureModelViewProjectionShaderProgram:
     def __init__(self):
 
         vertex_shader = """
-            #version 130
+            #version 330
             
             uniform mat4 projection;
             uniform mat4 view;
@@ -416,7 +416,7 @@ class SimpleTextureModelViewProjectionShaderProgram:
             """
 
         fragment_shader = """
-            #version 130
+            #version 330
 
             uniform sampler2D samplerTex;
 
